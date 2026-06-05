@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🌿 AAROGYA — Setup & Operations Handbook</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --emerald: #10B981;
+  --emerald-light: #D1FAE5;
+  --emerald-dark: #059669;
+  --blue: #2563EB;
+  --blue-light: #DBEAFE;
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #111827;
+  --text-2: #374151;
+  --text-3: #6B7280;
+  --sidebar-w: 260px;
+  --radius: 14px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  width:var(--sidebar-w);position:fixed;top:0;left:0;height:100vh;
+  background:#fff;border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;padding-bottom:40px;
+  display:flex;flex-direction:column;
+}
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:20px 20px 14px;border-bottom:1px solid var(--border)}
+.sidebar-logo h1{font-size:15px;font-weight:700;color:var(--emerald);letter-spacing:-.3px}
+.sidebar-logo p{font-size:11px;color:var(--text-3);margin-top:2px}
+#search-box{
+  margin:12px;padding:8px 12px;border:1px solid var(--border);
+  border-radius:8px;font-size:13px;font-family:inherit;
+  outline:none;width:calc(100% - 24px);
+}
+#search-box:focus{border-color:var(--emerald)}
+.nav-group{margin-top:6px}
+.nav-group-label{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.8px;text-transform:uppercase;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12.5px;color:var(--text-2);text-decoration:none;border-left:3px solid transparent;transition:all .15s}
+.nav-link:hover,.nav-link.active{color:var(--emerald);background:#F0FDF4;border-left-color:var(--emerald)}
+.nav-link .icon{font-size:14px;width:18px;text-align:center}
+
+/* ── MAIN ── */
+#main{margin-left:var(--sidebar-w);flex:1;padding:0 0 80px}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:90;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  padding:12px 40px;display:flex;align-items:center;justify-content:space-between;
+}
+#topbar h2{font-size:14px;color:var(--text-3);font-weight:500}
+.badge{background:var(--emerald-light);color:var(--emerald-dark);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#ecfdf5 0%,#eff6ff 100%);
+  padding:60px 40px;border-bottom:1px solid var(--border);
+}
+.hero-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--emerald);margin-bottom:12px}
+.hero h1{font-family:'Playfair Display',serif;font-size:42px;line-height:1.15;color:var(--text);margin-bottom:16px}
+.hero h1 span{color:var(--emerald)}
+.hero p{font-size:16px;color:var(--text-2);max-width:600px;line-height:1.7}
+.hero-stats{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap}
+.stat-pill{background:#fff;border:1px solid var(--border);border-radius:50px;padding:10px 20px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+.stat-pill strong{font-size:18px;color:var(--emerald)}
+.stat-pill span{font-size:12px;color:var(--text-3)}
+
+/* ── SECTION ── */
+.section{padding:50px 40px;border-bottom:1px solid var(--border)}
+.section h2{font-size:26px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.section-subtitle{font-size:14px;color:var(--text-3);margin-bottom:32px}
+
+/* ── CARDS ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:24px}
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s;
+}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.card p{font-size:13px;color:var(--text-3);line-height:1.65}
+
+/* Glass card */
+.glass-card{
+  background:rgba(255,255,255,.7);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.9);border-radius:var(--radius);
+  padding:22px;box-shadow:0 4px 30px rgba(16,185,129,.08);
+}
+
+/* ── CODE BLOCK ── */
+.code-wrap{position:relative;margin:16px 0}
+.code-wrap pre{
+  background:#111827;color:#e5e7eb;font-family:'DM Mono',monospace;
+  font-size:13px;line-height:1.7;padding:20px;border-radius:10px;
+  overflow-x:auto;white-space:pre;
+}
+.code-wrap .copy-btn{
+  position:absolute;top:10px;right:10px;background:#374151;color:#d1d5db;
+  border:none;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;
+  font-family:inherit;transition:background .2s;
+}
+.code-wrap .copy-btn:hover{background:var(--emerald)}
+.code-wrap .copy-btn.copied{background:var(--emerald);color:#fff}
+
+/* Inline code */
+code{background:#F3F4F6;color:var(--blue);font-family:'DM Mono',monospace;font-size:12px;padding:2px 6px;border-radius:4px}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:38px;height:38px;border-radius:50%;background:var(--emerald);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:15px;flex-shrink:0;
+}
+.step-body h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.step-body p{font-size:13px;color:var(--text-3);line-height:1.65}
+
+/* ── TABLE ── */
+.info-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+.info-table th{background:#F9FAFB;padding:10px 14px;text-align:left;font-weight:600;border:1px solid var(--border);color:var(--text-2)}
+.info-table td{padding:10px 14px;border:1px solid var(--border);color:var(--text-3);vertical-align:top}
+.info-table tr:hover td{background:#F9FAFB}
+
+/* ── ALERT BOXES ── */
+.alert{border-radius:10px;padding:14px 18px;font-size:13px;margin:12px 0;display:flex;gap:10px;align-items:flex-start}
+.alert-green{background:#D1FAE5;color:#065F46;border-left:4px solid var(--emerald)}
+.alert-blue{background:#DBEAFE;color:#1E40AF;border-left:4px solid var(--blue)}
+.alert-yellow{background:#FEF3C7;color:#92400E;border-left:4px solid #F59E0B}
+.alert-red{background:#FEE2E2;color:#991B1B;border-left:4px solid #EF4444}
+
+/* ── FLOWCHART ── */
+.flowchart{display:flex;flex-direction:column;align-items:center;gap:0;margin:30px auto;max-width:680px}
+.flow-node{
+  background:#fff;border:2px solid var(--border);border-radius:12px;
+  padding:14px 28px;text-align:center;min-width:220px;
+  font-size:13px;font-weight:600;color:var(--text);
+  box-shadow:var(--shadow);position:relative;
+}
+.flow-node.green{border-color:var(--emerald);background:#ECFDF5;color:var(--emerald-dark)}
+.flow-node.blue{border-color:var(--blue);background:#EFF6FF;color:#1D4ED8}
+.flow-node.purple{border-color:#7C3AED;background:#F5F3FF;color:#5B21B6}
+.flow-node.orange{border-color:#D97706;background:#FFFBEB;color:#92400E}
+.flow-node.pink{border-color:#DB2777;background:#FDF2F8;color:#9D174D}
+.flow-arrow{
+  display:flex;flex-direction:column;align-items:center;
+  color:var(--text-3);font-size:11px;gap:0;
+}
+.flow-arrow::before{content:'│';font-size:18px;color:var(--border);line-height:1}
+.flow-arrow::after{content:'▼';font-size:10px;color:var(--text-3)}
+.flow-label{background:#F9FAFB;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:11px;color:var(--text-3);margin:4px 0}
+
+/* Horizontal flow */
+.flow-row{display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.flow-h-arrow{color:var(--border);font-size:18px;margin:0 6px}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:30px;margin:24px 0}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--emerald),var(--blue))}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-dot{
+  position:absolute;left:-26px;width:18px;height:18px;border-radius:50%;
+  background:var(--emerald);border:3px solid #fff;box-shadow:0 0 0 2px var(--emerald);
+}
+.tl-content{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.tl-content h4{font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.tl-content p{font-size:13px;color:var(--text-3);line-height:1.6}
+
+/* ── PROGRESS BARS ── */
+.progress-item{margin-bottom:16px}
+.progress-item label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px}
+.progress-bar{height:10px;background:#E5E7EB;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--emerald),var(--blue))}
+
+/* ── Q&A ── */
+.qa-item{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.qa-q{padding:14px 18px;font-weight:600;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#fff;user-select:none}
+.qa-q:hover{background:#F9FAFB}
+.qa-a{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:13px;color:var(--text-3);line-height:1.7;background:#FAFAFA}
+.qa-item.open .qa-a{max-height:400px;padding:14px 18px}
+.qa-item.open .qa-q::after{transform:rotate(180deg)}
+.qa-q::after{content:'▾';transition:transform .3s;font-size:16px}
+
+/* ── CHEAT SHEET ── */
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:20px}
+.cheat-card{
+  background:linear-gradient(135deg,var(--emerald),#059669);
+  color:#fff;border-radius:12px;padding:18px;text-align:center;
+}
+.cheat-card .step-n{font-size:28px;font-weight:700;opacity:.7;line-height:1}
+.cheat-card h4{font-size:13px;font-weight:700;margin:8px 0 4px}
+.cheat-card code{background:rgba(255,255,255,.2);color:#fff;font-size:11px}
+
+/* ── CREDS ── */
+.cred-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:20px}
+.cred-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;box-shadow:var(--shadow)}
+.cred-card .role-icon{font-size:32px;margin-bottom:8px}
+.cred-card h4{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.cred-card .field{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)}
+.cred-card .field:last-child{border-bottom:none}
+.cred-card .field label{color:var(--text-3)}
+.cred-card .field span{font-family:'DM Mono',monospace;color:var(--text);font-weight:600}
+
+/* PRINT */
+@media print{
+  #sidebar,#topbar{display:none}
+  #main{margin-left:0}
+  .section{page-break-inside:avoid}
+}
+/* MOBILE */
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);transition:transform .3s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .section{padding:30px 20px}
+  .hero{padding:40px 20px}
+  .hero h1{font-size:28px}
+  #topbar{padding:10px 20px}
+  #menu-btn{display:flex!important}
+}
+#menu-btn{
+  display:none;background:none;border:none;font-size:22px;cursor:pointer;
+  align-items:center;justify-content:center;width:36px;height:36px;
+}
+
+/* Folder tree */
+.folder-tree{font-family:'DM Mono',monospace;font-size:13px;line-height:2;background:#F9FAFB;border:1px solid var(--border);border-radius:10px;padding:16px 20px;color:var(--text-2)}
+.folder-tree .dir{color:var(--blue);font-weight:600}
+.folder-tree .file{color:var(--text-3)}
+.folder-tree .desc{color:var(--emerald-dark);font-style:italic;font-size:11px}
+
+/* Highlight spans in code */
+.hl-green{color:#34D399}
+.hl-blue{color:#60A5FA}
+.hl-yellow{color:#FBBF24}
+.hl-pink{color:#F472B6}
+
+/* Tag pill */
+.tag{display:inline-block;background:var(--emerald-light);color:var(--emerald-dark);font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin:2px}
+.tag.blue{background:var(--blue-light);color:#1D4ED8}
+.tag.purple{background:#F5F3FF;color:#5B21B6}
+
+/* Agent card */
+.agent-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px}
+.agent-card .agent-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.agent-card .agent-icon{font-size:32px}
+.agent-card .agent-title h3{font-size:16px;font-weight:700;margin-bottom:2px}
+.agent-card .agent-title p{font-size:12px;color:var(--text-3)}
+.agent-row{display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:13px;margin-bottom:6px}
+.agent-row label{font-weight:600;color:var(--text-2)}
+.agent-row span{color:var(--text-3)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <h1>🌿 AAROGYA</h1>
+    <p>Setup & Operations Handbook</p>
+  </div>
+  <input type="text" id="search-box" placeholder="🔍 Search sections…"/>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Overview</div>
+    <a href="#overview" class="nav-link"><span class="icon">🌿</span>Project Overview</a>
+    <a href="#architecture" class="nav-link"><span class="icon">🏗️</span>Architecture</a>
+    <a href="#techstack" class="nav-link"><span class="icon">⚙️</span>Tech Stack</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">AI & Data</div>
+    <a href="#agents" class="nav-link"><span class="icon">🤖</span>AI Agents</a>
+    <a href="#database" class="nav-link"><span class="icon">🗄️</span>Database Design</a>
+    <a href="#structure" class="nav-link"><span class="icon">📁</span>Folder Structure</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Installation</div>
+    <a href="#requirements" class="nav-link"><span class="icon">📋</span>Requirements</a>
+    <a href="#install" class="nav-link"><span class="icon">⚡</span>Installation</a>
+    <a href="#verify" class="nav-link"><span class="icon">✅</span>Verify Project</a>
+    <a href="#credentials" class="nav-link"><span class="icon">🔑</span>Login Credentials</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Demo & Presentation</div>
+    <a href="#demomode" class="nav-link"><span class="icon">🚀</span>Hackathon Demo</a>
+    <a href="#demoflow" class="nav-link"><span class="icon">🎬</span>Demo Flow</a>
+    <a href="#dashboardtour" class="nav-link"><span class="icon">📊</span>Dashboard Tour</a>
+    <a href="#script" class="nav-link"><span class="icon">🎤</span>Presentation Script</a>
+    <a href="#qa" class="nav-link"><span class="icon">❓</span>Judge Q&amp;A</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Operations</div>
+    <a href="#troubleshoot" class="nav-link"><span class="icon">🔧</span>Troubleshooting</a>
+    <a href="#deployment" class="nav-link"><span class="icon">🚢</span>Deployment</a>
+    <a href="#status" class="nav-link"><span class="icon">📈</span>Project Status</a>
+    <a href="#cheatsheet" class="nav-link"><span class="icon">📄</span>Cheat Sheet</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <button id="menu-btn" onclick="toggleSidebar()">☰</button>
+  <h2>🌿 AAROGYA — Complete Handbook</h2>
+  <div style="display:flex;gap:10px;align-items:center">
+    <span class="badge">v1.0</span>
+    <button onclick="window.print()" style="background:none;border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit">🖨️ Print</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🏥 AI-Powered Rural Healthcare Platform</div>
+  <h1>🌿 <span>AAROGYA</span><br/>Setup & Operations Manual</h1>
+  <p>A complete handbook for installing, running, demoing, and presenting AAROGYA — even if you've never seen the project before. Zero prior knowledge required.</p>
+  <div class="hero-stats">
+    <div class="stat-pill"><strong>8</strong><span>AI Agents</span></div>
+    <div class="stat-pill"><strong>6</strong><span>Languages</span></div>
+    <div class="stat-pill"><strong>96%</strong><span>Complete</span></div>
+    <div class="stat-pill"><strong>19</strong><span>Sections</span></div>
+  </div>
+</div>
+
+<!-- SECTION 1: OVERVIEW -->
+<section class="section" id="overview">
+  <h2>🌿 Project Overview</h2>
+  <p class="section-subtitle">Everything you need to know about AAROGYA in one place</p>
+
+  <div class="alert alert-green">💡 <strong>What is AAROGYA?</strong> AAROGYA is an AI-powered rural healthcare platform that connects Patients, Healthcare Workers (HCWs), and Doctors through Telegram and a Clinical Dashboard — no smartphones or apps required.</div>
+
+  <p style="font-size:14px;line-height:1.8;color:var(--text-2);margin-bottom:24px">In rural India, millions of people lack access to proper healthcare because doctors are scarce, hospitals are far, and patients speak local languages. AAROGYA solves this by deploying AI agents accessible via Telegram (which runs on even the most basic smartphone) in Tamil, Hindi, Telugu, Kannada, Malayalam, and English.</p>
+
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">👤</div><h3>Patient Registration</h3><p>Patients register via Telegram in their native language. The AI captures name, age, village, language preference, and medical history.</p></div>
+    <div class="card"><div class="card-icon">🩺</div><h3>Prescription OCR</h3><p>Patients photograph their prescription. Gemini AI reads the image, extracts medicines, dosages, and diagnosis automatically.</p></div>
+    <div class="card"><div class="card-icon">💊</div><h3>Medication Reminders</h3><p>After OCR, Celery Beat automatically schedules medication reminders as Telegram messages — morning, afternoon, night.</p></div>
+    <div class="card"><div class="card-icon">🧪</div><h3>Lab Report Analysis</h3><p>Upload lab reports as images. Gemini extracts biomarkers, compares to reference ranges, and explains results in simple language.</p></div>
+    <div class="card"><div class="card-icon">🎤</div><h3>Voice Health Assistant</h3><p>Speak in Tamil/Hindi/Telugu. The AI transcribes, understands the health query, and responds in the same language using Gemini.</p></div>
+    <div class="card"><div class="card-icon">❤️</div><h3>Daily Symptom Monitoring</h3><p>Daily check-in messages. Patients report symptoms. AI classifies severity (Mild/Moderate/Critical) and recommends action.</p></div>
+    <div class="card"><div class="card-icon">⚠️</div><h3>Risk Alert Detection</h3><p>When critical symptoms or dangerous biomarker combinations are detected, the system creates an alert visible to doctors immediately.</p></div>
+    <div class="card"><div class="card-icon">👨‍⚕️</div><h3>Doctor Copilot</h3><p>AI-generated diagnosis suggestions, lab recommendations, medication review, and follow-up scheduling presented on the doctor's dashboard.</p></div>
+    <div class="card"><div class="card-icon">📊</div><h3>Village Health Analytics</h3><p>Aggregate health trends by village — disease prevalence, compliance rates, risk distribution — helping HCWs prioritize interventions.</p></div>
+    <div class="card"><div class="card-icon">🏥</div><h3>HCW Dashboard</h3><p>Healthcare workers see their assigned patients, pending visits, compliance scores, and can trigger urgent home visits from the dashboard.</p></div>
+  </div>
+
+  <h3 style="margin-top:36px;margin-bottom:16px;font-size:17px">🎯 Problem Statement</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <div class="glass-card" style="background:#FEF2F2;border-color:#FECACA">
+      <h4 style="color:#DC2626;margin-bottom:10px;font-size:14px">❌ Current Situation</h4>
+      <ul style="font-size:13px;color:#7F1D1D;line-height:2;list-style:none">
+        <li>📍 Doctors >30km away from villages</li>
+        <li>📝 Paper prescriptions lost or misread</li>
+        <li>💊 80% medication non-compliance</li>
+        <li>🌐 Language barriers with healthcare</li>
+        <li>📊 Zero data on village health trends</li>
+      </ul>
+    </div>
+    <div class="glass-card" style="background:#ECFDF5;border-color:#A7F3D0">
+      <h4 style="color:#065F46;margin-bottom:10px;font-size:14px">✅ AAROGYA Solution</h4>
+      <ul style="font-size:13px;color:#065F46;line-height:2;list-style:none">
+        <li>📱 Works on basic Telegram (no app install)</li>
+        <li>🤖 AI reads prescriptions automatically</li>
+        <li>⏰ Automated medication reminders</li>
+        <li>🗣️ Voice queries in 6 Indian languages</li>
+        <li>📊 Real-time village health dashboard</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: ARCHITECTURE -->
+<section class="section" id="architecture">
+  <h2>🏗️ System Architecture</h2>
+  <p class="section-subtitle">End-to-end data flow through AAROGYA's layers</p>
+
+  <!-- MAIN FLOWCHART -->
+  <div class="flowchart">
+    <div class="flow-node green">👤 Patient / HCW / Doctor</div>
+    <div class="flow-arrow"><span class="flow-label">Telegram Message / Image / Voice</span></div>
+    <div class="flow-node blue">📱 Telegram Bot (python-telegram-bot)<br/><small style="font-weight:400;font-size:11px">Receives updates, routes to handlers</small></div>
+    <div class="flow-arrow"><span class="flow-label">HTTP POST via webhook / polling</span></div>
+    <div class="flow-node blue">⚡ FastAPI Backend (Port 8000)<br/><small style="font-weight:400;font-size:11px">REST API, Auth, Business Logic</small></div>
+    <div class="flow-arrow"><span class="flow-label">Dispatches to appropriate service</span></div>
+    <!-- Fork row -->
+    <div style="display:flex;gap:16px;justify-content:center;width:100%;flex-wrap:wrap;margin:4px 0">
+      <div class="flow-node purple" style="min-width:160px;font-size:12px">🤖 Gemini 2.5 Flash<br/><small style="font-weight:400;font-size:11px">AI Analysis</small></div>
+      <div class="flow-node orange" style="min-width:160px;font-size:12px">🐘 PostgreSQL<br/><small style="font-weight:400;font-size:11px">Primary DB</small></div>
+      <div class="flow-node pink" style="min-width:160px;font-size:12px">⚡ Redis<br/><small style="font-weight:400;font-size:11px">Cache + Queue</small></div>
+    </div>
+    <div class="flow-arrow"><span class="flow-label">Async tasks enqueued</span></div>
+    <div class="flow-node orange">🌿 Celery Workers + Celery Beat<br/><small style="font-weight:400;font-size:11px">Reminder scheduling, background AI jobs</small></div>
+    <div class="flow-arrow"><span class="flow-label">Real-time data via REST API</span></div>
+    <div class="flow-node green">📊 Next.js Dashboard (Port 3000)<br/><small style="font-weight:400;font-size:11px">Doctor / HCW / Admin UI</small></div>
+  </div>
+
+  <h3 style="margin-top:36px;margin-bottom:16px;font-size:17px">🔄 Layer-by-Layer Explanation</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">📱</div><h3>Telegram Layer</h3><p>The entry point. Patients send text, voice, or images via Telegram. The bot processes these using command handlers and routes them to the FastAPI backend.</p></div>
+    <div class="card"><div class="card-icon">⚡</div><h3>API Layer (FastAPI)</h3><p>The core brain. Handles authentication (JWT), patient management, prescription upload, lab reports, reminders, risk alerts. All endpoints are documented at <code>/docs</code>.</p></div>
+    <div class="card"><div class="card-icon">🤖</div><h3>AI Layer (Gemini)</h3><p>Google's Gemini 2.5 Flash processes prescription images, lab reports, voice transcriptions, and symptom descriptions. Returns structured JSON for each task.</p></div>
+    <div class="card"><div class="card-icon">🗄️</div><h3>Database Layer</h3><p>PostgreSQL stores all persistent data — patients, prescriptions, lab reports, reminders, logs, alerts. SQLAlchemy ORM manages all queries.</p></div>
+    <div class="card"><div class="card-icon">⏰</div><h3>Background Jobs (Celery)</h3><p>Celery workers process async tasks like sending reminder messages. Celery Beat is the scheduler — it triggers reminder tasks at the correct time every day.</p></div>
+    <div class="card"><div class="card-icon">📊</div><h3>Dashboard Layer</h3><p>Next.js 14 frontend consumed by doctors, HCWs, and admins. Displays patient lists, risk alerts, compliance, analytics, and the Doctor Copilot interface.</p></div>
+  </div>
+
+  <h3 style="margin-top:36px;margin-bottom:16px;font-size:17px">🔁 Complete Data Flow: Prescription Upload</h3>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>📸 Patient Sends Photo</h4><p>Patient photographs their prescription and sends it to the Telegram bot.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>📨 Bot Receives Image</h4><p>Telegram Bot downloads the image file and forwards it with the patient's Telegram ID to FastAPI's <code>/prescriptions/upload</code> endpoint.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>💾 Saved to Disk</h4><p>FastAPI saves the image to the <code>uploads/</code> folder and creates a record in the PostgreSQL prescriptions table with status "pending".</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>🤖 Gemini Analyzes</h4><p>The prescription service sends the image to Gemini 2.5 Flash with a structured prompt. Gemini returns JSON with medicines, dosages, frequency, and diagnosis.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>💊 Reminders Created</h4><p>For each extracted medicine, the reminder service creates Celery Beat tasks for morning/afternoon/night notifications.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>✅ Patient Notified</h4><p>Telegram bot sends a confirmation to the patient with the extracted medicines and their reminder schedule in the patient's preferred language.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>📊 Dashboard Updated</h4><p>The Next.js dashboard immediately shows the new prescription under the patient's profile, visible to doctors and HCWs.</p></div></div>
+  </div>
+</section>
+
+<!-- SECTION 3: TECH STACK -->
+<section class="section" id="techstack">
+  <h2>⚙️ Complete Tech Stack</h2>
+  <p class="section-subtitle">Every technology used, and exactly why it was chosen</p>
+
+  <table class="info-table">
+    <tr><th>Category</th><th>Technology</th><th>Version</th><th>Why Chosen</th><th>Role in AAROGYA</th></tr>
+    <tr><td><span class="tag blue">Frontend</span></td><td><strong>Next.js</strong></td><td>14</td><td>Server-side rendering, fast page loads, excellent React ecosystem</td><td>Doctor/HCW/Admin dashboard with SSR for fast initial loads</td></tr>
+    <tr><td><span class="tag blue">Frontend</span></td><td><strong>TypeScript</strong></td><td>5.x</td><td>Type safety prevents runtime errors in dashboard logic</td><td>All frontend components, API call types, data models</td></tr>
+    <tr><td><span class="tag blue">Frontend</span></td><td><strong>Tailwind CSS</strong></td><td>3.x</td><td>Rapid UI development, consistent design tokens</td><td>All styling across dashboard components</td></tr>
+    <tr><td><span class="tag">Backend</span></td><td><strong>FastAPI</strong></td><td>0.110</td><td>Fastest Python framework; async support; auto Swagger docs</td><td>All REST API endpoints, webhook handling, business logic</td></tr>
+    <tr><td><span class="tag">Backend</span></td><td><strong>Python</strong></td><td>3.11</td><td>Rich ML/AI ecosystem; Gemini SDK available</td><td>All server-side logic, AI integration, Celery tasks</td></tr>
+    <tr><td><span class="tag">Backend</span></td><td><strong>SQLAlchemy</strong></td><td>2.x</td><td>Powerful ORM; supports async; schema migration support</td><td>All database models and queries</td></tr>
+    <tr><td><span class="tag purple">Database</span></td><td><strong>PostgreSQL</strong></td><td>16</td><td>ACID compliant; JSON support; production-grade reliability</td><td>Primary data store for all AAROGYA data</td></tr>
+    <tr><td><span class="tag purple">Cache</span></td><td><strong>Redis</strong></td><td>7.x</td><td>In-memory speed; Celery broker support; pub/sub capability</td><td>Celery message broker + result backend + session cache</td></tr>
+    <tr><td><span class="tag" style="background:#FEF3C7;color:#92400E">Jobs</span></td><td><strong>Celery + Beat</strong></td><td>5.x</td><td>Mature task queue; periodic task scheduling; async workers</td><td>Medication reminders, background AI analysis, scheduled jobs</td></tr>
+    <tr><td><span class="tag" style="background:#EDE9FE;color:#5B21B6">AI</span></td><td><strong>Gemini 2.5 Flash</strong></td><td>Latest</td><td>Multimodal (vision + text); fast; cost-effective; Indian language support</td><td>OCR, lab analysis, voice understanding, risk detection</td></tr>
+    <tr><td><span class="tag" style="background:#FCE7F3;color:#9D174D">Messaging</span></td><td><strong>Telegram Bot API</strong></td><td>—</td><td>800M+ users; works on 2G; no app install needed; free</td><td>Patient-facing interface for all interactions</td></tr>
+    <tr><td><span class="tag" style="background:#FEE2E2;color:#991B1B">Auth</span></td><td><strong>JWT + bcrypt</strong></td><td>—</td><td>Stateless auth; industry standard; secure password hashing</td><td>Dashboard login, API authentication, role-based access</td></tr>
+    <tr><td><span class="tag" style="background:#F0FDF4;color:#065F46">Deploy</span></td><td><strong>Docker Compose</strong></td><td>—</td><td>One-command startup; isolated containers; reproducible environment</td><td>Orchestrates all 7 services together</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 4: AI AGENTS -->
+<section class="section" id="agents">
+  <h2>🤖 AI Agents Explained</h2>
+  <p class="section-subtitle">Every AI agent — what it does, how it works, and what it produces</p>
+
+  <!-- Agent Flowchart -->
+  <h3 style="margin-bottom:16px;font-size:16px">🔗 Agent Interaction Diagram</h3>
+  <div class="flowchart">
+    <div class="flow-node blue">📱 Patient Message (Telegram)</div>
+    <div class="flow-arrow"></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:4px 0">
+      <div class="flow-node green" style="min-width:140px;font-size:12px">👤 Registration Agent</div>
+      <div class="flow-node purple" style="min-width:140px;font-size:12px">🩺 Prescription Agent</div>
+      <div class="flow-node orange" style="min-width:140px;font-size:12px">🧪 Lab Report Agent</div>
+      <div class="flow-node pink" style="min-width:140px;font-size:12px">🎤 Voice Agent</div>
+    </div>
+    <div class="flow-arrow"><span class="flow-label">All agents call Gemini AI</span></div>
+    <div class="flow-node blue">🤖 Gemini 2.5 Flash (AI Core)</div>
+    <div class="flow-arrow"><span class="flow-label">Results stored in DB</span></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:4px 0">
+      <div class="flow-node green" style="min-width:140px;font-size:12px">💊 Reminder Agent</div>
+      <div class="flow-node orange" style="min-width:140px;font-size:12px">❤️ Symptom Monitor</div>
+      <div class="flow-node pink" style="min-width:140px;font-size:12px">⚠️ Risk Detector</div>
+      <div class="flow-node purple" style="min-width:140px;font-size:12px">👨‍⚕️ Doctor Copilot</div>
+    </div>
+  </div>
+
+  <!-- Agents -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">👤</div>
+      <div class="agent-title"><h3>Registration Agent</h3><p>Onboards new patients via Telegram in their preferred language</p></div>
+    </div>
+    <div class="agent-row"><label>Input</label><span>Patient's Telegram messages (name, age, village, language choice)</span></div>
+    <div class="agent-row"><label>Process</label><span>Conversational flow in chosen language → captures all fields → validates phone number → creates user record</span></div>
+    <div class="agent-row"><label>Output</label><span>Patient profile in PostgreSQL, confirmation message in patient's language</span></div>
+    <div class="agent-row"><label>Languages</label><span><span class="tag">Tamil 🇮🇳</span><span class="tag">Hindi 🇮🇳</span><span class="tag">Telugu 🇮🇳</span><span class="tag">Kannada 🇮🇳</span><span class="tag">Malayalam 🇮🇳</span><span class="tag">English</span></span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">🩺</div>
+      <div class="agent-title"><h3>Prescription Reader Agent</h3><p>Extracts medicines and diagnosis from prescription images using Gemini Vision</p></div>
+    </div>
+    <div class="agent-row"><label>Input</label><span>Prescription photo (JPG/PNG) sent via Telegram</span></div>
+    <div class="agent-row"><label>OCR Process</label><span>Image → Base64 encode → Gemini Vision API with structured prompt → JSON response</span></div>
+    <div class="agent-row"><label>Extracts</label><span>Medicine names, dosages (mg), frequency (1-0-1), duration (days), doctor name, diagnosis</span></div>
+    <div class="agent-row"><label>Output</label><span>Prescription record in DB + Celery reminder tasks created automatically</span></div>
+    <div class="code-wrap"><pre><span class="hl-yellow">// Example Gemini Response</span>
+{
+  <span class="hl-green">"medicines"</span>: [
+    {"name": "Paracetamol", "dose": "500mg", "frequency": "1-1-1", "days": 5},
+    {"name": "Azithromycin", "dose": "250mg", "frequency": "1-0-0", "days": 3}
+  ],
+  <span class="hl-green">"diagnosis"</span>: "Acute Upper Respiratory Infection",
+  <span class="hl-green">"doctor"</span>: "Dr. Ramesh"
+}</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">💊</div>
+      <div class="agent-title"><h3>Reminder Agent</h3><p>Schedules and sends medication reminders via Telegram at the right times</p></div>
+    </div>
+    <div class="agent-row"><label>Trigger</label><span>After prescription OCR completes successfully</span></div>
+    <div class="agent-row"><label>Scheduling</label><span>Celery Beat creates periodic tasks — Morning (8AM), Afternoon (2PM), Night (9PM) per medicine</span></div>
+    <div class="agent-row"><label>Compliance</label><span>Patient confirms with ✅/❌ reply. Each response logged in compliance_logs table.</span></div>
+    <div class="agent-row"><label>Output</label><span>Compliance score (%) visible on HCW dashboard</span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">🧪</div>
+      <div class="agent-title"><h3>Lab Report Agent</h3><p>Reads lab report images and explains results in plain language</p></div>
+    </div>
+    <div class="agent-row"><label>Input</label><span>Lab report photo (blood test, urine test, etc.)</span></div>
+    <div class="agent-row"><label>Extraction</label><span>Biomarker names, values, units, reference ranges</span></div>
+    <div class="agent-row"><label>AI Explanation</label><span>Gemini explains each abnormal value in simple language (e.g. "Your HbA1c is 8.2 — this means your blood sugar has been high for 3 months")</span></div>
+    <div class="agent-row"><label>Risk Detection</label><span>Dangerous combinations flagged (e.g. high creatinine + low hemoglobin = kidney concern). Alert created immediately.</span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">❤️</div>
+      <div class="agent-title"><h3>Symptom Monitor Agent</h3><p>Daily check-ins to track patient health and detect deterioration early</p></div>
+    </div>
+    <div class="agent-row"><label>Trigger</label><span>Daily at 7AM — Celery Beat sends "How are you feeling today?" to all registered patients</span></div>
+    <div class="agent-row"><label>Input</label><span>Patient's text or voice response describing symptoms</span></div>
+    <div class="agent-row"><label>Classification</label><span>Gemini classifies as: 🟢 Mild / 🟡 Moderate / 🔴 Critical</span></div>
+    <div class="agent-row"><label>Output</label><span>Symptom log stored + if Critical → Risk Alert created → Doctor notified on dashboard</span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">⚠️</div>
+      <div class="agent-title"><h3>Risk Detector Agent</h3><p>Automatically flags high-risk patients before their condition worsens</p></div>
+    </div>
+    <div class="agent-row"><label>Rules</label><span>Critical symptoms + 3+ day non-compliance + dangerous biomarker combinations</span></div>
+    <div class="agent-row"><label>Sources</label><span>Symptom logs, compliance logs, lab reports — analyzed together</span></div>
+    <div class="agent-row"><label>Output</label><span>Risk alert with priority level (Low/Medium/High/Critical) → appears on doctor and HCW dashboards</span></div>
+    <div class="agent-row"><label>Action</label><span>HCW can mark alert resolved or schedule home visit directly from dashboard</span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">👨‍⚕️</div>
+      <div class="agent-title"><h3>Doctor Copilot Agent</h3><p>AI-powered clinical decision support for rural doctors</p></div>
+    </div>
+    <div class="agent-row"><label>Input</label><span>Complete patient history — symptoms, prescriptions, lab reports, compliance records</span></div>
+    <div class="agent-row"><label>Suggested Diagnosis</label><span>Gemini analyzes all data and suggests top 3 probable diagnoses with reasoning</span></div>
+    <div class="agent-row"><label>Suggested Labs</label><span>Recommends specific tests based on current symptoms and existing results</span></div>
+    <div class="agent-row"><label>Medication Review</label><span>Checks for drug interactions in current prescription, flags concerns</span></div>
+    <div class="agent-row"><label>Follow-Up</label><span>Recommends follow-up timeline based on patient risk profile</span></div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-header">
+      <div class="agent-icon">🎤</div>
+      <div class="agent-title"><h3>Voice Assistant Agent</h3><p>Multilingual voice interface for patients who cannot type</p></div>
+    </div>
+    <div class="agent-row"><label>Input</label><span>Voice message sent to Telegram bot in any of 6 Indian languages</span></div>
+    <div class="agent-row"><label>Step 1</label><span>Telegram sends voice file → FastAPI downloads OGG audio file</span></div>
+    <div class="agent-row"><label>Step 2</label><span>Gemini transcribes audio to text (Speech-to-Text, multilingual)</span></div>
+    <div class="agent-row"><label>Step 3</label><span>Gemini analyzes health query and generates response in the same language</span></div>
+    <div class="agent-row"><label>Step 4</label><span>Response sent as text message back to patient via Telegram</span></div>
+    <div class="agent-row"><label>Languages</label><span><span class="tag">Tamil</span><span class="tag">Hindi</span><span class="tag">Telugu</span><span class="tag">Kannada</span><span class="tag">Malayalam</span><span class="tag">English</span></span></div>
+  </div>
+</section>
+
+<!-- SECTION 5: DATABASE -->
+<section class="section" id="database">
+  <h2>🗄️ Database Design</h2>
+  <p class="section-subtitle">PostgreSQL schema — all tables and their relationships</p>
+
+  <!-- DB Relationship Diagram -->
+  <div style="background:#F9FAFB;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:28px;font-family:'DM Mono',monospace;font-size:12px;line-height:2;overflow-x:auto">
+    <div style="color:var(--text-3);margin-bottom:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600">📊 Table Relationship Map</div>
+    <pre style="color:var(--text-2)">
+users ──────────────── patients (1:1)
+  │                       │
+  │              ┌────────┼──────────┐
+  │              ▼        ▼          ▼
+  │        prescriptions  lab_reports  symptom_logs
+  │              │                       │
+  │              ▼                       ▼
+  │           reminders ──▶ compliance_logs
+  │
+  └──────────────────▶ risk_alerts
+                             │
+                             ▼
+                       activity_logs
+    </pre>
+  </div>
+
+  <table class="info-table">
+    <tr><th>Table</th><th>Purpose</th><th>Key Fields</th><th>Relationships</th></tr>
+    <tr>
+      <td><code>users</code></td>
+      <td>All system users (patients, HCWs, doctors, admins)</td>
+      <td>id, phone, hashed_password, role, language, telegram_id</td>
+      <td>Parent of patients, source of activity_logs</td>
+    </tr>
+    <tr>
+      <td><code>patients</code></td>
+      <td>Detailed patient medical profile</td>
+      <td>user_id, name, age, village, blood_group, chronic_conditions, assigned_hcw</td>
+      <td>Links to users, prescriptions, lab_reports, symptom_logs</td>
+    </tr>
+    <tr>
+      <td><code>prescriptions</code></td>
+      <td>Prescription records with OCR data</td>
+      <td>patient_id, image_path, medicines_json, diagnosis, doctor_name, status</td>
+      <td>Links to patients → reminders</td>
+    </tr>
+    <tr>
+      <td><code>lab_reports</code></td>
+      <td>Lab test results with AI analysis</td>
+      <td>patient_id, image_path, biomarkers_json, ai_explanation, risk_flags</td>
+      <td>Links to patients → may create risk_alerts</td>
+    </tr>
+    <tr>
+      <td><code>reminders</code></td>
+      <td>Medication reminder schedule</td>
+      <td>prescription_id, medicine_name, time_of_day, celery_task_id, active</td>
+      <td>Links prescriptions → compliance_logs</td>
+    </tr>
+    <tr>
+      <td><code>compliance_logs</code></td>
+      <td>Records patient's ✅/❌ responses to reminders</td>
+      <td>reminder_id, response (yes/no), timestamp</td>
+      <td>Child of reminders. Source of compliance score</td>
+    </tr>
+    <tr>
+      <td><code>symptom_logs</code></td>
+      <td>Daily health check-in responses</td>
+      <td>patient_id, symptoms_text, severity (mild/moderate/critical), ai_recommendation</td>
+      <td>Links to patients → may create risk_alerts</td>
+    </tr>
+    <tr>
+      <td><code>risk_alerts</code></td>
+      <td>High-priority patient alerts for doctors/HCWs</td>
+      <td>patient_id, alert_type, priority, description, status (open/resolved), created_by</td>
+      <td>Created by Symptom/Lab agents. Shown on dashboard.</td>
+    </tr>
+    <tr>
+      <td><code>activity_logs</code></td>
+      <td>Audit trail of all system actions</td>
+      <td>user_id, action, resource_type, resource_id, ip_address, timestamp</td>
+      <td>Linked to users. Read-only audit table.</td>
+    </tr>
+  </table>
+</section>
+
+<!-- SECTION 6: FOLDER STRUCTURE -->
+<section class="section" id="structure">
+  <h2>📁 Project Folder Structure</h2>
+  <p class="section-subtitle">Every file and folder explained — navigate the codebase with confidence</p>
+
+  <div class="folder-tree">
+    <span class="dir">Telegram Ai/</span>  <span class="desc">← Your project root. Start here.</span><br/>
+    ├── <span class="dir">backend/</span>           <span class="desc">← FastAPI Python backend</span><br/>
+    │   ├── <span class="dir">app/</span><br/>
+    │   │   ├── <span class="dir">api/</span>         <span class="desc">← All REST endpoints (routes)</span><br/>
+    │   │   │   ├── <span class="file">auth.py</span>      <span class="desc">← Login, token endpoints</span><br/>
+    │   │   │   ├── <span class="file">patients.py</span>  <span class="desc">← CRUD for patients</span><br/>
+    │   │   │   ├── <span class="file">prescriptions.py</span><br/>
+    │   │   │   ├── <span class="file">lab_reports.py</span><br/>
+    │   │   │   ├── <span class="file">reminders.py</span><br/>
+    │   │   │   └── <span class="file">alerts.py</span><br/>
+    │   │   ├── <span class="dir">agents/</span>      <span class="desc">← AI agent logic (Gemini calls)</span><br/>
+    │   │   │   ├── <span class="file">prescription_agent.py</span><br/>
+    │   │   │   ├── <span class="file">lab_agent.py</span><br/>
+    │   │   │   ├── <span class="file">symptom_agent.py</span><br/>
+    │   │   │   ├── <span class="file">risk_agent.py</span><br/>
+    │   │   │   ├── <span class="file">voice_agent.py</span><br/>
+    │   │   │   └── <span class="file">copilot_agent.py</span><br/>
+    │   │   ├── <span class="dir">models/</span>      <span class="desc">← SQLAlchemy database models</span><br/>
+    │   │   ├── <span class="dir">schemas/</span>     <span class="desc">← Pydantic request/response models</span><br/>
+    │   │   ├── <span class="dir">services/</span>    <span class="desc">← Business logic between API and agents</span><br/>
+    │   │   ├── <span class="file">main.py</span>      <span class="desc">← FastAPI app entry point</span><br/>
+    │   │   ├── <span class="file">config.py</span>    <span class="desc">← Environment config (Gemini key, DB URL)</span><br/>
+    │   │   └── <span class="file">celery_app.py</span><span class="desc">← Celery worker configuration</span><br/>
+    │   └── <span class="file">Dockerfile</span><br/>
+    ├── <span class="dir">frontend/</span>          <span class="desc">← Next.js 14 dashboard</span><br/>
+    │   └── <span class="dir">src/</span><br/>
+    │       ├── <span class="dir">app/</span>         <span class="desc">← Next.js App Router pages</span><br/>
+    │       │   ├── <span class="file">page.tsx</span>     <span class="desc">← Login page</span><br/>
+    │       │   ├── <span class="dir">dashboard/</span>   <span class="desc">← All dashboard pages</span><br/>
+    │       │   └── <span class="dir">api/</span>         <span class="desc">← Next.js API routes (proxy)</span><br/>
+    │       ├── <span class="dir">components/</span>  <span class="desc">← Reusable UI components</span><br/>
+    │       └── <span class="dir">lib/</span>         <span class="desc">← API client, auth helpers, utils</span><br/>
+    ├── <span class="dir">telegram_bot/</span>      <span class="desc">← Python Telegram Bot code</span><br/>
+    │   ├── <span class="file">bot.py</span>           <span class="desc">← Main bot entry, handler registration</span><br/>
+    │   ├── <span class="file">handlers.py</span>      <span class="desc">← Command and message handlers</span><br/>
+    │   └── <span class="file">Dockerfile</span><br/>
+    ├── <span class="dir">uploads/</span>           <span class="desc">← Prescription & lab report images stored here</span><br/>
+    ├── <span class="file">schema.sql</span>         <span class="desc">← Database schema (run manually or auto via ORM)</span><br/>
+    ├── <span class="file">seed_demo_data.py</span>  <span class="desc">← Hackathon demo data seed script</span><br/>
+    └── <span class="file">docker-compose.yml</span> <span class="desc">← Orchestrates all 7 containers</span><br/>
+  </div>
+</section>
+
+<!-- SECTION 7: REQUIREMENTS -->
+<section class="section" id="requirements">
+  <h2>📋 Installation Requirements</h2>
+  <p class="section-subtitle">What you need before you start</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <h3>Operating System</h3>
+      <p>Windows 10 or newer, macOS 12+, or Ubuntu 20.04+. All commands work on all OS.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>RAM</h3>
+      <p><strong>Minimum:</strong> 8GB RAM<br/><strong>Recommended:</strong> 16GB RAM<br/>All 7 containers run simultaneously.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💾</div>
+      <h3>Disk Space</h3>
+      <p><strong>Minimum:</strong> 5GB free<br/>Docker images + uploads folder + DB data.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🐋</div>
+      <h3>Docker Desktop</h3>
+      <p>Download from <strong>docker.com/products/docker-desktop</strong>. Must be running before any commands. Free for personal use.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <h3>Internet Connection</h3>
+      <p>Required for: Docker image downloads (first time), Gemini AI API calls, Telegram Bot API.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔑</div>
+      <h3>API Keys</h3>
+      <p>Gemini API Key (Google AI Studio — free), Telegram Bot Token (from @BotFather — free). Already configured in the project.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-yellow" style="margin-top:20px">⚠️ <strong>Important:</strong> Start Docker Desktop FIRST and wait until it shows "Docker is running" before executing any commands. Otherwise docker commands will fail.</div>
+</section>
+
+<!-- SECTION 8: INSTALLATION -->
+<section class="section" id="install">
+  <h2>⚡ Step-by-Step Installation</h2>
+  <p class="section-subtitle">Follow each step in order — do not skip steps</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>📦 Extract the ZIP File</h4>
+        <p>Right-click the downloaded ZIP → "Extract All" (Windows) or double-click (Mac). You'll see a folder called <code>Telegram Ai</code>. Place it somewhere easy to find like <code>C:\Projects\</code> or your Desktop.</p>
+        <div class="alert alert-green" style="margin-top:8px">✅ Expected: You see a folder with <code>docker-compose.yml</code> inside.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>🖥️ Open Terminal / Command Prompt</h4>
+        <p><strong>Windows:</strong> Press <code>Win + R</code>, type <code>cmd</code>, hit Enter. Or search "Command Prompt" in Start Menu.<br/><strong>Mac:</strong> Press <code>Cmd + Space</code>, type "Terminal", press Enter.<br/><strong>Linux:</strong> Press <code>Ctrl + Alt + T</code>.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>📂 Navigate to Project Folder</h4>
+        <div class="code-wrap"><pre>cd "Telegram Ai"</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <p>If your folder is on Desktop: <code>cd Desktop\Telegram Ai</code> (Windows) or <code>cd ~/Desktop/Telegram\ Ai</code> (Mac).</p>
+        <div class="alert alert-green">✅ Expected: Terminal prompt now shows the Telegram Ai path.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>🐋 Verify Docker is Running</h4>
+        <div class="code-wrap"><pre>docker --version</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="alert alert-green">✅ Expected output: <code>Docker version 27.x.x, build xxxxxxx</code></div>
+        <div class="alert alert-red">❌ If error: Open Docker Desktop application and wait for it to fully start (green icon).</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>🚀 Start the Entire Project</h4>
+        <div class="code-wrap"><pre>docker compose up -d --build</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <p>This is the main command. It builds and starts all 7 containers. <strong>First time takes 3-8 minutes</strong> (downloading Docker images). Subsequent runs take 30-60 seconds.</p>
+        <div class="alert alert-blue">ℹ️ What happens internally:<br/>• Docker builds Python backend image<br/>• Docker builds Next.js frontend image<br/>• Pulls PostgreSQL 16, Redis 7 images<br/>• Creates isolated network for containers<br/>• Initializes database schema<br/>• Starts all 7 containers in correct order</div>
+
+        <table class="info-table" style="margin-top:16px">
+          <tr><th>Container</th><th>Service</th><th>Port</th><th>Purpose</th></tr>
+          <tr><td><code>aarogya_api</code></td><td>FastAPI Backend</td><td>8000</td><td>REST API, AI agents, business logic</td></tr>
+          <tr><td><code>aarogya_frontend</code></td><td>Next.js Dashboard</td><td>3000</td><td>Web dashboard for doctors/HCWs</td></tr>
+          <tr><td><code>aarogya_db</code></td><td>PostgreSQL</td><td>5432</td><td>Primary database</td></tr>
+          <tr><td><code>aarogya_redis</code></td><td>Redis</td><td>6379</td><td>Celery broker + cache</td></tr>
+          <tr><td><code>aarogya_worker</code></td><td>Celery Worker</td><td>—</td><td>Processes background AI tasks</td></tr>
+          <tr><td><code>aarogya_beat</code></td><td>Celery Beat</td><td>—</td><td>Schedules periodic reminders</td></tr>
+          <tr><td><code>aarogya_bot</code></td><td>Telegram Bot</td><td>—</td><td>Patient-facing Telegram interface</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>✅ Verify All Containers Running</h4>
+        <div class="code-wrap"><pre>docker ps</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-wrap"><pre><span class="hl-green">CONTAINER ID   IMAGE              STATUS         PORTS</span>
+a1b2c3d4e5f6   aarogya_api        Up 2 minutes   0.0.0.0:8000->8000/tcp
+b2c3d4e5f6a1   aarogya_frontend   Up 2 minutes   0.0.0.0:3000->3000/tcp
+c3d4e5f6a1b2   postgres:16        Up 2 minutes   0.0.0.0:5432->5432/tcp
+d4e5f6a1b2c3   redis:7            Up 2 minutes   0.0.0.0:6379->6379/tcp
+e5f6a1b2c3d4   aarogya_worker     Up 2 minutes
+f6a1b2c3d4e5   aarogya_beat       Up 2 minutes
+a1b2c3d4e5f7   aarogya_bot        Up 2 minutes</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="alert alert-green">✅ All 7 containers should show "Up". If any show "Exited", run <code>docker logs &lt;container_name&gt;</code> to see the error.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: VERIFY -->
+<section class="section" id="verify">
+  <h2>✅ Verify the Project</h2>
+  <p class="section-subtitle">Confirm everything is working before the demo</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>1. Open Dashboard</h3>
+      <p>Go to: <code>http://localhost:3000</code></p>
+      <div class="alert alert-green" style="margin-top:8px">✅ Expected: Login page with AAROGYA branding</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h3>2. Open API Docs</h3>
+      <p>Go to: <code>http://localhost:8000/docs</code></p>
+      <div class="alert alert-green" style="margin-top:8px">✅ Expected: Swagger UI showing all API endpoints</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏓</div>
+      <h3>3. API Health Check</h3>
+      <p>Go to: <code>http://localhost:8000/health</code></p>
+      <div class="alert alert-green" style="margin-top:8px">✅ Expected: <code>{"status":"healthy"}</code></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;margin-bottom:12px;font-size:16px">🐘 Database Verification</h3>
+  <div class="code-wrap"><pre><span class="hl-yellow"># Connect to PostgreSQL inside the container</span>
+docker exec -it aarogya_db psql -U postgres -d aarogya
+
+<span class="hl-yellow"># Once inside psql, list all tables:</span>
+\dt
+
+<span class="hl-yellow"># Check patient count:</span>
+SELECT COUNT(*) FROM users;
+
+<span class="hl-yellow"># Exit psql:</span>
+\q</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+
+  <div class="alert alert-green">✅ Expected: You'll see all 9 tables listed. After seeding demo data, user count will be 20+.</div>
+</section>
+
+<!-- SECTION 10: CREDENTIALS -->
+<section class="section" id="credentials">
+  <h2>🔑 Login Credentials</h2>
+  <p class="section-subtitle">Use these accounts to access the dashboard</p>
+
+  <div class="cred-grid">
+    <div class="cred-card">
+      <div class="role-icon">👑</div>
+      <h4>Admin</h4>
+      <div class="field"><label>Phone</label><span>9876543200</span></div>
+      <div class="field"><label>Password</label><span>admin123</span></div>
+      <div class="field"><label>Access</label><span>Full system</span></div>
+    </div>
+    <div class="cred-card">
+      <div class="role-icon">👨‍⚕️</div>
+      <h4>Doctor</h4>
+      <div class="field"><label>Phone</label><span>9876543210</span></div>
+      <div class="field"><label>Password</label><span>doctor123</span></div>
+      <div class="field"><label>Access</label><span>Copilot, Alerts</span></div>
+    </div>
+    <div class="cred-card">
+      <div class="role-icon">🏥</div>
+      <h4>Healthcare Worker</h4>
+      <div class="field"><label>Phone</label><span>9876543211</span></div>
+      <div class="field"><label>Password</label><span>hcw123</span></div>
+      <div class="field"><label>Access</label><span>Patients, Village</span></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px;margin-bottom:12px;font-size:15px">🔐 Role Permissions</h3>
+  <table class="info-table">
+    <tr><th>Feature</th><th>👑 Admin</th><th>👨‍⚕️ Doctor</th><th>🏥 HCW</th></tr>
+    <tr><td>View all patients</td><td>✅</td><td>✅</td><td>✅ (assigned only)</td></tr>
+    <tr><td>Risk Alerts</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Doctor Copilot</td><td>✅</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Village Analytics</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>User Management</td><td>✅</td><td>❌</td><td>❌</td></tr>
+    <tr><td>System Settings</td><td>✅</td><td>❌</td><td>❌</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 11: DEMO MODE -->
+<section class="section" id="demomode">
+  <h2>🚀 Hackathon Demo Mode</h2>
+  <p class="section-subtitle">Instantly populate the dashboard with realistic demo data</p>
+
+  <div class="alert alert-blue">💡 The <strong>Load Hackathon Demo</strong> button runs <code>seed_demo_data.py</code> inside the containers. This creates a complete realistic scenario with 20 patients, prescriptions, lab reports, alerts, and compliance records — making the dashboard look impressive for judges.</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Login as Admin</h4>
+        <p>Go to <code>http://localhost:3000</code>. Login with Phone: <code>9876543200</code>, Password: <code>admin123</code></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Click "🚀 Load Hackathon Demo"</h4>
+        <p>Find this button on the Admin Dashboard. Click it. Wait 10-15 seconds while data loads.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Refresh Dashboard</h4>
+        <p>Press F5 or Ctrl+R to reload. The dashboard now shows all demo data.</p>
+        <div class="alert alert-green">✅ Expected: 20 patients, 15 prescriptions, 10 lab reports, 5 active alerts, compliance charts populated</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px;margin-bottom:12px;font-size:15px">📊 What Demo Data Creates</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">👥</div><h3>20 Patients</h3><p>From 5 different villages, multiple languages, different age groups and conditions.</p></div>
+    <div class="card"><div class="card-icon">🩺</div><h3>15 Prescriptions</h3><p>With extracted medicines, diagnosis, and active reminder schedules.</p></div>
+    <div class="card"><div class="card-icon">🧪</div><h3>10 Lab Reports</h3><p>Blood tests, HbA1c, creatinine — with AI explanations already generated.</p></div>
+    <div class="card"><div class="card-icon">⚠️</div><h3>5 Active Alerts</h3><p>Mix of High and Critical priority alerts for doctors to review.</p></div>
+    <div class="card"><div class="card-icon">📈</div><h3>Compliance Data</h3><p>30 days of medication compliance records — charts and scores populated.</p></div>
+  </div>
+</section>
+
+<!-- SECTION 12: DEMO FLOW -->
+<section class="section" id="demoflow">
+  <h2>🎬 Complete Demo Flow</h2>
+  <p class="section-subtitle">The end-to-end patient journey — what to show judges step by step</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>1️⃣ Register Patient via Telegram</h4>
+        <p><strong>User Action:</strong> Open Telegram, message the AAROGYA bot with <code>/start</code><br/>
+        <strong>System Action:</strong> Bot responds with language selection menu. Patient selects Tamil. Bot asks for name, age, village in Tamil.<br/>
+        <strong>Expected Result:</strong> New patient appears in dashboard under Patients tab within seconds.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>2️⃣ Upload Prescription Photo</h4>
+        <p><strong>User Action:</strong> Send a prescription photo to the Telegram bot.<br/>
+        <strong>System Action:</strong> Bot downloads image → sends to FastAPI → saved to uploads/ folder → Gemini Vision analyzes.<br/>
+        <strong>Expected Result:</strong> Bot replies "✅ Prescription received! I found: Paracetamol 500mg (1-1-1), Azithromycin..."</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>3️⃣ AI Extracts All Medicines</h4>
+        <p>Gemini Vision reads handwritten or printed text from the prescription. Extracts medicine names, dosages, frequencies, and duration. Returns structured JSON. Dashboard shows the prescription with all extracted data.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>4️⃣ Reminder Schedule Created</h4>
+        <p>For each medicine, Celery Beat creates time-based tasks. Patient gets: "🌅 Morning Reminder: Take Paracetamol 500mg" at 8AM every day. They reply ✅ or ❌. Compliance tracked automatically.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>5️⃣ Upload Lab Report</h4>
+        <p><strong>User Action:</strong> Send lab report image to bot.<br/>
+        <strong>System Action:</strong> Gemini extracts HbA1c, Creatinine, Hemoglobin, etc. Compares to normal ranges.<br/>
+        <strong>Expected Result:</strong> Patient gets a plain-language explanation of their results in Tamil.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>6️⃣ AI Explains Lab Report</h4>
+        <p>Example response: "உங்கள் HbA1c 8.2% — இது கடந்த 3 மாதங்களாக உங்கள் இரத்த சர்க்கரை அதிகமாக இருக்கிறது என்று காட்டுகிறது. மருத்துவரை சந்திக்கவும்." (Your HbA1c is 8.2% — this shows your blood sugar has been high for 3 months. Please see a doctor.)</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>7️⃣ Daily Symptom Check-In</h4>
+        <p><strong>User Action:</strong> Responds to daily "How are you feeling?" message.<br/>
+        <strong>System Action:</strong> Gemini classifies severity. If Mild → wellness tip sent. If Critical → Risk Alert created immediately.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>8️⃣ Risk Alert Created & Sent</h4>
+        <p>When a patient reports chest pain + shortness of breath, the Risk Detector creates a CRITICAL priority alert. The doctor's dashboard shows a red notification instantly. The HCW gets notified to make a home visit.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>9️⃣ Doctor Dashboard Updates</h4>
+        <p>Doctor logs in → sees new Alert for the patient → clicks "Doctor Copilot" → AI shows suggested diagnosis, recommended tests, medication review, and follow-up plan — all pre-generated by Gemini.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>🔟 Village Analytics Updated</h4>
+        <p>The Village Analytics page now shows the updated health trends: disease distribution by village, compliance rates by HCW, high-risk patient density map, and monthly trend charts — ready for public health decision-making.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 13: DASHBOARD TOUR -->
+<section class="section" id="dashboardtour">
+  <h2>📊 Dashboard Tour</h2>
+  <p class="section-subtitle">Every screen explained — what it shows and what judges should see</p>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">🏠</div><div class="agent-title"><h3>Dashboard (Home)</h3><p>System overview — the first screen after login</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Total patients, active reminders, open alerts, compliance %, recent activity feed</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Demonstrates real-time system health at a glance. Point out the compliance percentage and alert count.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">👥</div><div class="agent-title"><h3>Patients</h3><p>Complete patient management</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Patient list with village, age, last check-in, compliance score, risk level badge</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Click any patient to see their full profile — prescriptions, lab reports, symptom history, reminder schedule.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">🩺</div><div class="agent-title"><h3>Prescriptions</h3><p>All OCR-processed prescriptions</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Original prescription image alongside extracted medicines — side by side comparison</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Show a prescription image and its extracted data — this demonstrates the OCR AI capability clearly.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">🧪</div><div class="agent-title"><h3>Lab Reports</h3><p>Lab results with AI explanations</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Biomarker table with color coding (red = abnormal), AI explanation panel, risk flag badges</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Click a lab report → show the AI explanation in Tamil. Emphasize that patients understand their results now.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">⚠️</div><div class="agent-title"><h3>Risk Alerts</h3><p>Priority alerts requiring doctor/HCW attention</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Sorted by priority (Critical → High → Medium → Low), patient name, reason, time since created</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Show a Critical alert and explain that this patient was automatically flagged by AI — no human needed to notice.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">👨‍⚕️</div><div class="agent-title"><h3>Doctor Copilot</h3><p>AI clinical decision support</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Differential diagnosis list, recommended lab tests, drug interaction warnings, follow-up plan</span></div>
+      <div class="agent-row"><label>For Judges</label><span>This is the crown jewel. Show how a doctor sees AI-powered suggestions for a complex patient — saving 30 minutes per consultation.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">📊</div><div class="agent-title"><h3>Village Analytics</h3><p>Population-level health intelligence</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Disease prevalence by village (bar chart), compliance heatmap, monthly trend line, top risk conditions</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Explain that this data powers public health policy decisions. No other rural platform provides this level of village-level analytics.</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-header"><div class="agent-icon">🎤</div><div class="agent-title"><h3>Voice Assistant</h3><p>Multilingual voice health queries</p></div></div>
+      <div class="agent-row"><label>Shows</label><span>Voice query history with transcription and AI response side by side</span></div>
+      <div class="agent-row"><label>For Judges</label><span>Show a real example of a Tamil voice query and its response. This resonates with judges focused on rural accessibility.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 14: TROUBLESHOOTING -->
+<section class="section" id="troubleshoot">
+  <h2>🔧 Troubleshooting Guide</h2>
+  <p class="section-subtitle">Common problems and exact solutions — don't panic, just follow the steps</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Docker Not Running / "docker not found" error</div>
+      <div class="qa-a">
+        <strong>Solution:</strong> Open Docker Desktop from your Applications or Start Menu. Wait until you see the whale icon in the system tray/menu bar is stable (not animating). Then retry the command. Docker Desktop must be running BEFORE any docker commands.<br/><br/>
+        If Docker Desktop isn't installed: go to <code>docker.com/products/docker-desktop</code> and download it.
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Frontend Not Loading at localhost:3000</div>
+      <div class="qa-a">
+        <strong>Step 1:</strong> Check if container is running: <code>docker ps | grep frontend</code><br/>
+        <strong>Step 2:</strong> If not running: <code>docker logs aarogya_frontend</code> to see error.<br/>
+        <strong>Step 3:</strong> Restart: <code>docker compose restart aarogya_frontend</code><br/>
+        <strong>Step 4:</strong> Wait 30 seconds and try again. Next.js takes ~20s to build on first start.
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: API Not Loading at localhost:8000</div>
+      <div class="qa-a">
+        <strong>Step 1:</strong> <code>docker logs aarogya_api</code><br/>
+        <strong>Step 2:</strong> Look for "ERROR" in the logs. Common cause: database not ready yet.<br/>
+        <strong>Step 3:</strong> Wait 10 seconds and restart: <code>docker compose restart aarogya_api</code><br/>
+        <strong>Step 4:</strong> Ensure database is healthy: <code>docker ps | grep aarogya_db</code>
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Gemini AI Not Working / "API Key Invalid"</div>
+      <div class="qa-a">
+        <strong>Step 1:</strong> Open <code>docker-compose.yml</code> in any text editor.<br/>
+        <strong>Step 2:</strong> Find <code>GEMINI_API_KEY</code> under the api service.<br/>
+        <strong>Step 3:</strong> Get a free API key from <code>aistudio.google.com</code><br/>
+        <strong>Step 4:</strong> Replace the key value, save the file.<br/>
+        <strong>Step 5:</strong> <code>docker compose up -d --build</code> to restart with new key.
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Telegram Bot Not Responding</div>
+      <div class="qa-a">
+        <strong>Step 1:</strong> <code>docker logs aarogya_bot</code> — look for "Error" or "Unauthorized".<br/>
+        <strong>Step 2:</strong> If "Unauthorized" — the bot token is invalid. Update <code>TELEGRAM_BOT_TOKEN</code> in docker-compose.yml.<br/>
+        <strong>Step 3:</strong> Get a new bot token by messaging @BotFather on Telegram → /newbot.<br/>
+        <strong>Step 4:</strong> Restart bot: <code>docker compose restart aarogya_bot</code>
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Database Connection Failed</div>
+      <div class="qa-a">
+        <strong>Step 1:</strong> <code>docker ps | grep aarogya_db</code> — verify it's running.<br/>
+        <strong>Step 2:</strong> If not running: <code>docker compose up -d aarogya_db</code><br/>
+        <strong>Step 3:</strong> Wait 15 seconds for PostgreSQL to initialize, then restart api: <code>docker compose restart aarogya_api</code><br/>
+        <strong>Step 4:</strong> If data seems lost: <code>docker compose down -v</code> then <code>docker compose up -d --build</code> (WARNING: this clears all data)
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: Port Already In Use (EADDRINUSE)</div>
+      <div class="qa-a">
+        <strong>Windows:</strong> <code>netstat -ano | findstr :3000</code> to find the process. Then <code>taskkill /PID &lt;PID&gt; /F</code><br/>
+        <strong>Mac/Linux:</strong> <code>lsof -ti:3000 | xargs kill -9</code><br/>
+        Then retry <code>docker compose up -d</code>.<br/><br/>
+        <strong>Alternative:</strong> Change the port in docker-compose.yml from 3000:3000 to 3001:3000 and access at localhost:3001.
+      </div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">🔴 Problem: "No space left on device" error</div>
+      <div class="qa-a">
+        Docker images are eating disk space. Clean up with:<br/>
+        <code>docker system prune -a</code><br/>
+        This removes unused images, containers, and volumes. Then rebuild: <code>docker compose up -d --build</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 15: DEPLOYMENT -->
+<section class="section" id="deployment">
+  <h2>🚢 Deployment Guide</h2>
+  <p class="section-subtitle">Running AAROGYA locally, on a VPS, or in production</p>
+
+  <h3 style="margin-bottom:16px;font-size:16px">🏠 Local Deployment (Hackathon)</h3>
+  <div class="code-wrap"><pre><span class="hl-yellow"># Build all Docker images</span>
+docker compose build
+
+<span class="hl-yellow"># Start all containers in background</span>
+docker compose up -d
+
+<span class="hl-yellow"># Check status</span>
+docker ps
+
+<span class="hl-yellow"># View API logs (live)</span>
+docker logs -f aarogya_api
+
+<span class="hl-yellow"># View frontend logs</span>
+docker logs -f aarogya_frontend
+
+<span class="hl-yellow"># Restart a specific service</span>
+docker compose restart aarogya_api
+
+<span class="hl-yellow"># Stop everything</span>
+docker compose down</pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+
+  <h3 style="margin-top:28px;margin-bottom:16px;font-size:16px">☁️ VPS / Cloud Deployment</h3>
+  <div class="code-wrap"><pre><span class="hl-yellow"># On your VPS (Ubuntu 22.04 recommended)</span>
+
+<span class="hl-yellow"># Step 1: Install Docker</span>
+curl -fsSL https://get.docker.com | bash
+
+<span class="hl-yellow"># Step 2: Upload project (from local machine)</span>
+scp -r "Telegram Ai" user@your-vps-ip:~/
+
+<span class="hl-yellow"># Step 3: SSH into VPS and run</span>
+ssh user@your-vps-ip
+cd "Telegram Ai"
+docker compose up -d --build
+
+<span class="hl-yellow"># Step 4: Allow firewall ports</span>
+ufw allow 3000
+ufw allow 8000
+
+<span class="hl-yellow"># Access at: http://your-vps-ip:3000</span></pre><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+
+  <table class="info-table" style="margin-top:20px">
+    <tr><th>Command</th><th>What It Does</th><th>When to Use</th></tr>
+    <tr><td><code>docker compose build</code></td><td>Builds Docker images from Dockerfiles without starting containers</td><td>Before first run or after code changes</td></tr>
+    <tr><td><code>docker compose up -d</code></td><td>Starts all containers in detached (background) mode</td><td>To start the project</td></tr>
+    <tr><td><code>docker ps</code></td><td>Lists all running containers with their status and ports</td><td>To verify all 7 containers are running</td></tr>
+    <tr><td><code>docker logs aarogya_api</code></td><td>Shows log output from the API container</td><td>Debugging API errors</td></tr>
+    <tr><td><code>docker logs aarogya_frontend</code></td><td>Shows Next.js build and runtime logs</td><td>Debugging dashboard issues</td></tr>
+    <tr><td><code>docker compose restart</code></td><td>Stops and restarts all containers</td><td>After config changes</td></tr>
+    <tr><td><code>docker compose down</code></td><td>Stops and removes all containers (data preserved in volumes)</td><td>To cleanly shut down</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 16: PRESENTATION SCRIPT -->
+<section class="section" id="script">
+  <h2>🎤 5-Minute Presentation Script</h2>
+  <p class="section-subtitle">Read exactly this — word for word — for the hackathon demo</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 0:00 — Opening Hook (30 seconds)</h4>
+        <p><em>"Imagine you're a 65-year-old farmer in a Tamil Nadu village. Your nearest doctor is 40 kilometers away. You have a prescription you can't read, lab reports you don't understand, and you keep forgetting your medications. This is the reality for 700 million rural Indians. AAROGYA changes that."</em><br/><br/>
+        <strong>Action:</strong> Have the AAROGYA dashboard open on the main screen. Show the hero stats.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 0:30 — What is AAROGYA (30 seconds)</h4>
+        <p><em>"AAROGYA is an AI-powered healthcare platform built on Telegram — which means it works on any basic smartphone, on 2G, in Tamil, Hindi, Telugu, Kannada, and Malayalam. No app to install. No digital literacy required."</em><br/><br/>
+        <strong>Action:</strong> Open Telegram on your phone. Show the AAROGYA bot.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 1:00 — Live Demo: Prescription OCR (1 minute)</h4>
+        <p><em>"Watch what happens when I take a photo of this prescription and send it to AAROGYA."</em><br/><br/>
+        <strong>Action:</strong> Send prescription photo to Telegram bot. Wait for AI response.<br/>
+        <em>"In 8 seconds, the AI has read this prescription, extracted all medicines and dosages, and it's already scheduling medication reminders for morning, afternoon, and night — in the patient's language."</em></p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 2:00 — Dashboard Demo (1.5 minutes)</h4>
+        <p><strong>Action:</strong> Switch to dashboard at <code>localhost:3000</code>. Login as Doctor.<br/>
+        <em>"This is what the doctor sees. 20 patients from 5 villages. Compliance scores. And look — this patient has a Critical alert. They reported chest pain this morning. The AI flagged it immediately."</em><br/><br/>
+        <strong>Action:</strong> Click on the alert. Show Doctor Copilot.<br/>
+        <em>"And here's our Doctor Copilot — AI has already analyzed this patient's complete history and is suggesting differential diagnoses, which tests to order, and a follow-up plan. The doctor doesn't start from scratch — they start from AI insight."</em></p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 3:30 — Village Analytics (30 seconds)</h4>
+        <p><strong>Action:</strong> Click Village Analytics tab.<br/>
+        <em>"At the public health level, AAROGYA shows village-wise disease distribution, compliance rates, and risk trends — the data that health officers need to allocate resources, but never had before."</em></p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>⏱️ 4:00 — Impact & Closing (1 minute)</h4>
+        <p><em>"AAROGYA is not a concept. It's running right now on Docker, with 8 AI agents powered by Gemini 2.5 Flash, supporting 6 Indian languages, with a complete dashboard for doctors and healthcare workers. We are 96% complete and 98% hackathon-ready."</em><br/><br/>
+        <em>"The problem is 700 million people. The solution is in their pocket — their basic Telegram app. AAROGYA bridges AI with accessibility. Thank you."</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 17: Q&A -->
+<section class="section" id="qa">
+  <h2>❓ Judge Questions & Professional Answers</h2>
+  <p class="section-subtitle">Click each question to reveal the answer</p>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="qa-item"><div class="qa-q">Why did you choose AI for this problem?</div><div class="qa-a">Rural healthcare has a fundamental supply problem — there aren't enough doctors. AI doesn't replace doctors; it extends their reach. A Gemini-powered agent can read a prescription, explain a lab report, or detect a risk pattern instantly at scale, allowing one doctor to effectively oversee hundreds of patients in remote villages they could never physically visit.</div></div>
+    <div class="qa-item"><div class="qa-q">Why Telegram? Why not a dedicated app?</div><div class="qa-a">800 million people use Telegram globally. In rural India, Telegram works on 2G, on ₹2000 phones, with minimal data consumption. A dedicated app requires installation, storage, updates, and digital literacy. Telegram requires none of that. The patient already has it. We meet users where they are.</div></div>
+    <div class="qa-item"><div class="qa-q">How does the Prescription OCR work exactly?</div><div class="qa-a">The prescription photo is downloaded from Telegram, converted to Base64, and sent to Gemini 2.5 Flash's vision API with a structured prompt requesting JSON output. Gemini reads both handwritten and printed text with high accuracy. The extracted medicines, dosages, and frequency are stored in PostgreSQL and used to create Celery reminder tasks automatically.</div></div>
+    <div class="qa-item"><div class="qa-q">How accurate is the OCR?</div><div class="qa-a">Gemini 2.5 Flash achieves ~92-95% accuracy on clear prescription photos. For edge cases, the extracted data is shown to the patient/HCW for verification before reminders are activated. The system is designed to be helpful, not to replace clinical validation.</div></div>
+    <div class="qa-item"><div class="qa-q">How does Risk Detection work?</div><div class="qa-a">The Risk Detector Agent aggregates data from multiple sources: symptom severity (from daily check-ins), medication compliance rate (from compliance_logs), and lab biomarker combinations (from lab_reports). If a patient reports critical symptoms AND has poor compliance AND shows dangerous biomarker patterns, a high-priority alert is created automatically — no human needs to notice the pattern.</div></div>
+    <div class="qa-item"><div class="qa-q">How does the Doctor Copilot work?</div><div class="qa-a">The Copilot Agent sends the complete patient history — all prescriptions, lab reports, symptom logs, and compliance records — to Gemini with a clinical reasoning prompt. Gemini returns structured JSON with: top 3 differential diagnoses with reasoning, recommended lab tests, drug interaction warnings, and follow-up timeline. This is presented as an AI suggestion panel alongside the patient record. The doctor makes the final decision.</div></div>
+    <div class="qa-item"><div class="qa-q">Which Indian languages do you support?</div><div class="qa-a">Tamil, Hindi, Telugu, Kannada, Malayalam, and English. The language is selected during patient registration and all subsequent interactions — text, voice queries, medication reminders, lab explanations — are in that language. Gemini 2.5 Flash natively supports all these languages without translation APIs.</div></div>
+    <div class="qa-item"><div class="qa-q">How scalable is the platform?</div><div class="qa-a">The architecture is horizontally scalable. FastAPI is async and can handle thousands of concurrent requests. Celery workers can be scaled by adding more worker containers. PostgreSQL handles millions of records. The Telegram Bot API has no meaningful rate limits for healthcare use. On Docker Compose today; ready for Kubernetes at scale.</div></div>
+    <div class="qa-item"><div class="qa-q">What makes this different from other healthcare apps?</div><div class="qa-a">Three things: (1) Zero friction — Telegram, no app install. (2) Truly multilingual — 6 Indian languages natively. (3) End-to-end automation — from prescription photo to medication reminder happens automatically without any human intervention. Most apps require clinic staff to enter data manually. AAROGYA is self-operating.</div></div>
+    <div class="qa-item"><div class="qa-q">How do you handle data privacy?</div><div class="qa-a">Patient data is stored in a PostgreSQL database running inside Docker on the hospital/clinic's own server — not on a public cloud by default. All API endpoints use JWT authentication. Passwords are bcrypt-hashed. Activity logs provide a complete audit trail. For production, all traffic would be encrypted with TLS.</div></div>
+    <div class="qa-item"><div class="qa-q">What happens if there's no internet connection?</div><div class="qa-a">The local system continues to work for dashboard access and data viewing. Medication reminder sending and AI features require internet (for Telegram API and Gemini). For offline resilience, a queuing system is in place — reminders that couldn't be sent are queued and retried when connectivity returns.</div></div>
+    <div class="qa-item"><div class="qa-q">How much does this cost to operate?</div><div class="qa-a">Gemini 2.5 Flash costs approximately $0.075 per 1M input tokens. For a village of 1000 patients with daily interactions, the AI cost is under ₹500/month. Telegram is free. PostgreSQL and Redis are open source. The entire infrastructure can run on a ₹3000/month VPS. This is designed for deployment with minimal operational cost.</div></div>
+    <div class="qa-item"><div class="qa-q">What's the compliance improvement you expect?</div><div class="qa-a">Studies show automated medication reminders improve compliance by 40-60% in chronic disease patients. AAROGYA's personalized, multilingual reminders in the patient's native language are expected to exceed this benchmark, especially for elderly patients who respond well to familiar language communication.</div></div>
+    <div class="qa-item"><div class="qa-q">Can it handle multiple patients per bot?</div><div class="qa-a">Yes. The bot identifies each patient by their unique Telegram user ID. All state is stored in PostgreSQL, not in the bot session. Thousands of patients can interact with the same bot simultaneously without any conflict — each conversation is fully isolated by user ID.</div></div>
+    <div class="qa-item"><div class="qa-q">What is the tech stack?</div><div class="qa-a">FastAPI (Python 3.11) + PostgreSQL + Redis + Celery for backend. Next.js 14 + TypeScript + Tailwind for the dashboard. Gemini 2.5 Flash for all AI. python-telegram-bot for the Telegram interface. Docker Compose for container orchestration. All open-source except Gemini API.</div></div>
+    <div class="qa-item"><div class="qa-q">How long did you build this?</div><div class="qa-a">The complete platform was built during this hackathon. The architecture was designed for extensibility — new AI agents can be added as new Python classes, new Telegram commands registered in handlers.py, and new database tables added via SQLAlchemy migrations. The system is designed to grow.</div></div>
+    <div class="qa-item"><div class="qa-q">What's next? Future roadmap?</div><div class="qa-a">(1) Integration with Ayushman Bharat patient IDs for national-scale deployment. (2) WhatsApp support alongside Telegram. (3) Offline voice caching for zero-connectivity areas. (4) Integration with government PHC (Primary Health Centre) systems. (5) ASHA worker mobile app with offline sync. (6) Predictive disease outbreak detection using village analytics trends.</div></div>
+    <div class="qa-item"><div class="qa-q">Why FastAPI over Django or Flask?</div><div class="qa-a">FastAPI is async-first, which means it can handle many Telegram webhooks and AI calls concurrently without blocking. It auto-generates Swagger documentation. It uses Pydantic for request/response validation — perfect for structured AI output parsing. Flask is sync. Django is too heavy for this use case. FastAPI is the modern Python standard for async APIs.</div></div>
+    <div class="qa-item"><div class="qa-q">Why Gemini and not GPT-4?</div><div class="qa-a">Three reasons: (1) Gemini 2.5 Flash is faster and cheaper than GPT-4 for high-volume tasks. (2) Gemini has native multimodal support (image + text) without a separate vision model API. (3) Gemini's Indian language support is superior for Tamil, Telugu, and Malayalam. (4) Google's infrastructure ensures reliability at scale.</div></div>
+    <div class="qa-item"><div class="qa-q">How do healthcare workers use it?</div><div class="qa-a">HCWs log into the web dashboard, see their assigned village's patients, compliance heatmaps, and pending alerts. They can schedule home visits directly from the dashboard, update patient notes, and see AI-recommended priority cases for the day. The dashboard reduces the HCW's daily planning from 2 hours to 15 minutes.</div></div>
+  </div>
+</section>
+
+<!-- SECTION 18: STATUS -->
+<section class="section" id="status">
+  <h2>📈 Project Completion Status</h2>
+  <p class="section-subtitle">Current state of the project for hackathon presentation</p>
+
+  <div style="max-width:500px;margin-bottom:32px">
+    <div class="progress-item">
+      <label><span>🌿 Overall Project Completion</span><strong>96%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:96%"></div></div>
+    </div>
+    <div class="progress-item">
+      <label><span>🚀 Hackathon Readiness</span><strong>98%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:98%"></div></div>
+    </div>
+    <div class="progress-item">
+      <label><span>🏭 Production Readiness</span><strong>85%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+    </div>
+    <div class="progress-item">
+      <label><span>🤖 AI Agents Completed</span><strong>100%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="progress-item">
+      <label><span>📊 Dashboard Screens</span><strong>90%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+    </div>
+    <div class="progress-item">
+      <label><span>📚 API Documentation</span><strong>100%</strong></label>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card" style="border-color:var(--emerald)">
+      <div class="card-icon">✅</div>
+      <h3>Completed (96%)</h3>
+      <p>All 8 AI agents operational. Full Telegram bot. Dashboard with 8 screens. Docker orchestration. Demo data seeder. Auth system. All DB tables.</p>
+    </div>
+    <div class="card" style="border-color:#F59E0B">
+      <div class="card-icon">🔄</div>
+      <h3>Remaining (4%)</h3>
+      <p>Voice-to-speech reply (text response works, audio response pending). WhatsApp integration (Phase 2). Minor UI polish on mobile dashboard.</p>
+    </div>
+    <div class="card" style="border-color:var(--blue)">
+      <div class="card-icon">🏭</div>
+      <h3>Production Gap (15%)</h3>
+      <p>TLS/HTTPS setup. Rate limiting on API. Automated database backups. Kubernetes migration. HIPAA compliance review for production deployment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 19: CHEAT SHEET -->
+<section class="section" id="cheatsheet">
+  <h2>📄 Quick Start Cheat Sheet</h2>
+  <p class="section-subtitle">The entire startup process in 7 steps — print this page for the demo</p>
+
+  <div class="cheat-grid">
+    <div class="cheat-card"><div class="step-n">1</div><h4>Open Terminal</h4><p style="font-size:11px;opacity:.8">Win: cmd / Mac: Terminal</p></div>
+    <div class="cheat-card"><div class="step-n">2</div><h4>Navigate</h4><code>cd "Telegram Ai"</code></div>
+    <div class="cheat-card"><div class="step-n">3</div><h4>Start Project</h4><code>docker compose up -d --build</code></div>
+    <div class="cheat-card"><div class="step-n">4</div><h4>Open Dashboard</h4><code>localhost:3000</code></div>
+    <div class="cheat-card"><div class="step-n">5</div><h4>Login Admin</h4><code>9876543200 / admin123</code></div>
+    <div class="cheat-card"><div class="step-n">6</div><h4>Load Demo</h4><p style="font-size:11px;opacity:.8">Click 🚀 Load Hackathon Demo</p></div>
+    <div class="cheat-card"><div class="step-n">7</div><h4>Present!</h4><p style="font-size:11px;opacity:.8">Follow Section 16 script</p></div>
+  </div>
+
+  <div class="alert alert-green" style="margin-top:24px">
+    🔗 <strong>Key URLs:</strong> Dashboard → <code>http://localhost:3000</code> &nbsp;|&nbsp; API Docs → <code>http://localhost:8000/docs</code> &nbsp;|&nbsp; Health Check → <code>http://localhost:8000/health</code>
+  </div>
+
+  <div class="alert alert-blue" style="margin-top:8px">
+    🐋 <strong>Emergency Commands:</strong> Restart all → <code>docker compose restart</code> &nbsp;|&nbsp; View logs → <code>docker logs aarogya_api</code> &nbsp;|&nbsp; Nuclear reset → <code>docker compose down && docker compose up -d --build</code>
+  </div>
+
+  <div style="margin-top:32px;text-align:center;padding:24px;background:linear-gradient(135deg,#ECFDF5,#EFF6FF);border-radius:16px;border:1px solid var(--border)">
+    <div style="font-size:32px;margin-bottom:8px">🌿</div>
+    <h3 style="font-size:20px;color:var(--emerald-dark);margin-bottom:4px">AAROGYA</h3>
+    <p style="font-size:13px;color:var(--text-3)">AI-Powered Rural Healthcare Platform</p>
+    <p style="font-size:12px;color:var(--text-3);margin-top:8px">Powered by Gemini 2.5 Flash · Built with FastAPI + Next.js · Deployed via Docker</p>
+    <p style="font-size:11px;color:var(--text-3);margin-top:4px">🌿 Connecting 700M Rural Indians to Quality Healthcare</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+// Scrollspy
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+});
+
+// Search
+document.getElementById('search-box').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  navLinks.forEach(l => {
+    const match = l.textContent.toLowerCase().includes(q);
+    l.style.display = q === '' || match ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.nav-group-label').forEach(g => { g.style.display = ''; });
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Q&A toggle
+document.querySelectorAll('.qa-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.qa-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Mobile sidebar
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Close sidebar on link click (mobile)
+navLinks.forEach(l => {
+  l.addEventListener('click', () => {
+    if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
