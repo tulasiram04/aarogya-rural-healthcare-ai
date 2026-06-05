@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Relational Database Engine
+  db:
+    image: postgres:15-alpine
+    container_name: aarogya_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: aarogya
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql # auto-seeds tables on initialization
+
+  # 2. Redis Event Cache & Celery Broker
+  redis:
+    image: redis:7-alpine
+    container_name: aarogya_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # 3. FastAPI Core Gateway & Orchestrator API
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aarogya_api
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/workspace/uploads
+      - ./seed_demo_data.py:/workspace/seed_demo_data.py
+    depends_on:
+      - db
+      - redis
+
+  # 4. Asynchronous Task Worker
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aarogya_worker
+    restart: always
+    command: celery -A app.tasks.celery_worker.celery_app worker --loglevel=info
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=aarogya
+      - REDIS_URL=redis://redis:6379/0
+      - TELEGRAM_BOT_TOKEN=8387009840:AAF6Ajr1ZD6nscy48q9KbmvWqV7eCUwA3v0
+    volumes:
+      - ./uploads:/workspace/uploads
+    depends_on:
+      - db
+      - redis
+
+  # 5. Scheduling Coordinator (Beat daemon)
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aarogya_beat
+    restart: always
+    command: celery -A app.tasks.celery_worker.celery_app beat --loglevel=info
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=aarogya
+      - REDIS_URL=redis://redis:6379/0
+      - TELEGRAM_BOT_TOKEN=8387009840:AAF6Ajr1ZD6nscy48q9KbmvWqV7eCUwA3v0
+    depends_on:
+      - db
+      - redis
+
+  # 6. Telegram Bot Service Daemon
+  telegram_bot:
+    build:
+      context: .
+      dockerfile: ./telegram_bot/Dockerfile
+    container_name: aarogya_bot
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=aarogya
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./uploads:/workspace/uploads
+    depends_on:
+      - db
+      - redis
+
+  # 7. Next.js Doctor & HCW Interface
+  frontend:
+    image: node:18-alpine
+    container_name: aarogya_frontend
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

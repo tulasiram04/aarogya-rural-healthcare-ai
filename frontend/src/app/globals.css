@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;      /* #F8FAFC (Slate 50) */
+    --foreground: 222 47% 11%;      /* #0F172A (Slate 900) */
+ 
+    --card: 0 0% 100%;              /* #FFFFFF (White) */
+    --card-foreground: 222 47% 11%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+ 
+    --primary: 162.4 77.9% 40.6%;   /* #10B981 (Emerald 500) */
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 221.2 83.2% 53.3%; /* #2563EB (Blue 600) */
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 210 40% 96.1%;         /* Slate 100 */
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;   /* Rose 500 */
+    --destructive-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;          /* Amber 500 */
+    --warning-foreground: 210 40% 98%;
+ 
+    --border: 214.3 31.8% 91.4%;    /* Slate 200 */
+    --input: 214.3 31.8% 89.9%;
+    --ring: 162.4 77.9% 40.6%;
+ 
+    --radius: 1rem;                 /* Rounded clinical feel */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+/* Premium Clinical Glassmorphism utility classes */
+.glass-panel {
+  @apply bg-white/85 backdrop-blur-md border border-slate-200/50 shadow-sm;
+}
+
+.glass-card {
+  @apply bg-white backdrop-blur-sm border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20;
+}
