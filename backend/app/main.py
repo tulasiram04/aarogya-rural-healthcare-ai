@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 from app.core.config import settings
-from app.api import auth, patients, prescriptions, reports, reminders, alerts, dashboard, activity, assistant
+from app.api import auth, patients, prescriptions, reports, reminders, alerts, dashboard, activity, assistant, mcp
 from app.core.migrate import run_migrations
 
 # Configure logger
@@ -49,6 +49,7 @@ app.include_router(alerts.router, prefix=settings.API_V1_STR)
 app.include_router(dashboard.router, prefix=settings.API_V1_STR)
 app.include_router(activity.router, prefix=settings.API_V1_STR)
 app.include_router(assistant.router, prefix=settings.API_V1_STR)
+app.include_router(mcp.router, prefix=settings.API_V1_STR)
 
 @app.get("/health", tags=["system"])
 def health_check():

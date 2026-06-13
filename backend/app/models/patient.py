@@ -17,6 +17,8 @@ class Patient(Base):
     gender: Mapped[str | None] = mapped_column(String(20), nullable=True)
     village: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
     sub_center: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    blood_group: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    profile_completion: Mapped[int] = mapped_column(Integer, default=60, nullable=False)
     
     assigned_hcw_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     assigned_doctor_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True)

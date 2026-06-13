@@ -67,10 +67,10 @@ def _mock_patient_ids(db: Session) -> list:
     """Patients that are NOT valid Telegram-bot registrations."""
     return [
         p.id for p in db.query(Patient.id).filter(
-            Patient.is_demo == True  # noqa: E712
-            | Patient.telegram_id.is_(None)
+            (Patient.is_demo == True)  # noqa: E712
+            | (Patient.telegram_id.is_(None))
             | (
-                Patient.telegram_id.isnot(None)
+                (Patient.telegram_id.isnot(None))
                 & (Patient.telegram_id >= DEMO_TELEGRAM_ID_MIN)
                 & (Patient.telegram_id <= DEMO_TELEGRAM_ID_MAX)
             )

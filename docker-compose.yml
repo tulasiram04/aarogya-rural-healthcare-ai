@@ -37,7 +37,7 @@ services:
       - POSTGRES_SERVER=db
       - REDIS_URL=redis://redis:6379/0
     ports:
-      - "8000:8000"
+      - "8282:8000"
     volumes:
       - ./uploads:/workspace/uploads
       - ./seed_demo_data.py:/workspace/seed_demo_data.py
@@ -118,7 +118,7 @@ services:
       - "3000:3000"
     command: sh -c "npm install && npm run dev"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_API_URL=http://localhost:8282/api/v1
     depends_on:
       - api
 

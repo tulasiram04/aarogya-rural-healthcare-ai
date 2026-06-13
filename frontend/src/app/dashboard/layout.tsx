@@ -75,7 +75,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     { name: 'Lab Reports', path: '/dashboard/reports', icon: '🧪', count: newReportsCount || undefined, badgeColor: 'bg-blue-50 text-blue-600 border-blue-100' },
     { name: 'Risk Alerts', path: '/dashboard/alerts', icon: '⚠️', count: alertCount || undefined, badgeColor: 'bg-rose-50 text-rose-600 border-rose-100' },
     { name: 'HCW Checklist', path: '/dashboard/hcw', icon: '📋' },
-    { name: 'Demo Guide', path: '/dashboard/demo-guide', icon: '🚀' },
+    { name: 'MCP Tools', path: '/dashboard/mcp', icon: '🧩' },
   ];
 
   return (

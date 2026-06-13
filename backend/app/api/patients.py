@@ -192,6 +192,8 @@ def get_patient_detail(
         "gender": patient.gender,
         "village": patient.village,
         "sub_center": patient.sub_center,
+        "blood_group": patient.blood_group,
+        "profile_completion": patient.profile_completion or 60,
         "preferred_language": patient.preferred_language,
         "medical_history": patient.medical_history,
         "is_active": patient.is_active,

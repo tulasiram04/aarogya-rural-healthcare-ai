@@ -28,6 +28,8 @@ MIGRATIONS = [
     "CREATE INDEX IF NOT EXISTS idx_activity_logs_patient ON activity_logs(patient_id)",
     "CREATE INDEX IF NOT EXISTS idx_activity_logs_created ON activity_logs(created_at)",
     "CREATE INDEX IF NOT EXISTS idx_patients_demo ON patients(is_demo)",
+    "ALTER TABLE patients ADD COLUMN IF NOT EXISTS blood_group VARCHAR(20)",
+    "ALTER TABLE patients ADD COLUMN IF NOT EXISTS profile_completion INTEGER DEFAULT 60 NOT NULL",
 ]
 
 

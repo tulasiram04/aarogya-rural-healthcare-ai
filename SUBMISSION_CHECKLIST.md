@@ -1,0 +1,22 @@
+# Hackathon Submission Checklist
+
+- [x] **README complete**
+  - Updated with full features list, complete tech stack, architecture flow, env configuration, and run instructions.
+- [x] **AI_USAGE.md complete**
+  - Documented Gemini integration, LangGraph execution, and OCR workflows.
+- [x] **Architecture document complete**
+  - Created architectural mermaid diagrams and defined the multi-tier platform layout.
+- [x] **Demo guide complete**
+  - Structured standard 2-minute workflow for presentation and judging.
+- [x] **Pytest tests added**
+  - Integrated 7 comprehensive test functions covering endpoint health, middleware authentication, and MCP tools query.
+- [x] **Telegram Bot verified**
+  - Checked integration handlers for message parsing and document uploads.
+- [x] **MCP verified**
+  - Tested tools via FastAPI Rest interfaces: `search_patient`, `get_patient_risk`, `get_patient_prescriptions`, and `dashboard_summary`.
+- [x] **Dashboard verified**
+  - Validated that Overview, Patients, Prescriptions, Reports, Alerts, and MCP Tools compile cleanly and run in light theme.
+- [x] **Demo video recorded**
+  - Demo steps mapped out in `DEMO_GUIDE.md` for recording.
+- [x] **Submission package ready**
+  - Verified Docker environments and cleaned build caches.

@@ -17,6 +17,7 @@ from app.models.patient import Patient
 from app.services.activity import create_activity_log
 from app.services.doctor_assignment import assign_doctor_to_patient
 from app.services.risk_score import calculate_predictive_risk_score
+from app.mcp.server import call_mcp_tool
 from datetime import datetime, timezone, time, timedelta
 
 logger = logging.getLogger("aarogya.agents")
@@ -58,6 +59,7 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
     
     db = SessionLocal()
     image_url = f"/uploads/prescriptions/{state['patient_id']}.jpg"
+    progress_cb = state.get("progress_callback")
     
     # Save prescription image to local shared directory
     if state["raw_input_bytes"]:
@@ -68,6 +70,11 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
                 f.write(state["raw_input_bytes"])
             image_url = f"/uploads/prescriptions/{filename}"
             logger.info(f"PRESCRIPTION IMAGE SAVED to {filepath}")
+            if progress_cb:
+                try:
+                    progress_cb(10)
+                except Exception as p_err:
+                    logger.error(f"Error calling progress callback (10%): {p_err}")
         except Exception as file_err:
             logger.error(f"Failed to save prescription file: {str(file_err)}")
 
@@ -79,6 +86,12 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
         extracted = ocr_service.ocr_prescription(state["raw_input_bytes"])
         if not extracted or (not extracted.get("medicines") and not extracted.get("diagnosis")):
             ai_failed = True
+        else:
+            if progress_cb:
+                try:
+                    progress_cb(30)
+                except Exception as p_err:
+                    logger.error(f"Error calling progress callback (30%): {p_err}")
     except Exception as gem_err:
         logger.error(f"GEMINI FAILURE: Prescription OCR extraction failed: {str(gem_err)}")
         ai_failed = True
@@ -115,11 +128,17 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
                     existing["duration"] = med.get("duration")
         
         extracted["medicines"] = list(merged_meds.values())
+        if progress_cb:
+            try:
+                progress_cb(60)
+            except Exception as p_err:
+                logger.error(f"Error calling progress callback (60%): {p_err}")
         meds_summary = "\n".join([f"- {m.get('name')} ({m.get('dosage')} - {m.get('frequency')})" for m in extracted.get("medicines")])
         response_msg = f"I have read your prescription and scheduled reminders for:\n{meds_summary}"
 
     # Save to database
     db_rx = None
+    prescription_id = None
     try:
         db_rx = Prescription(
             patient_id=state["patient_id"],
@@ -133,7 +152,8 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
         db.add(db_rx)
         db.commit()
         db.refresh(db_rx)
-        logger.info("PRESCRIPTION SAVED")
+        prescription_id = db_rx.id
+        logger.info(f"PRESCRIPTION SAVED (id={prescription_id})")
 
         # Log Activity
         patient = db.query(Patient).filter(Patient.id == state["patient_id"]).first()
@@ -153,7 +173,7 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
                     
                 db_rem = Reminder(
                     patient_id=state["patient_id"],
-                    prescription_id=db_rx.id,
+                    prescription_id=prescription_id,
                     medicine_name=med.get("name", "Unknown Medicine"),
                     dosage=med.get("dosage", "1 tablet"),
                     schedule_time=rem_time,
@@ -164,6 +184,11 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
                 db.add(db_rem)
                 logger.info("REMINDER GENERATED")
             db.commit()
+            if progress_cb:
+                try:
+                    progress_cb(85)
+                except Exception as p_err:
+                    logger.error(f"Error calling progress callback (85%): {p_err}")
     except Exception as e:
         logger.error(f"Error saving prescription/reminders: {str(e)}")
         db.rollback()
@@ -172,7 +197,7 @@ def prescription_reader_node(state: AgentState) -> Dict[str, Any]:
         
     return {
         "extracted_data": {
-            "prescription_id": str(db_rx.id) if db_rx else None,
+            "prescription_id": str(prescription_id) if prescription_id else None,
             "medicines": extracted.get("medicines", []),
             "diagnosis": extracted.get("diagnosis"),
             "metrics": {}
@@ -351,6 +376,51 @@ def symptom_monitor_node(state: AgentState) -> Dict[str, Any]:
     }
 
 
+def mcp_router_node(state: AgentState) -> Dict[str, Any]:
+    """Detects MCP-eligible queries and injects structured tool results into state."""
+    logger.info("MCP Router Node: Checking for MCP-eligible intent")
+    raw_text = (state.get("raw_input_text") or "").lower().strip()
+
+    if not raw_text:
+        return {}
+
+    import re
+    uuid_pattern = r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+    found_ids = re.findall(uuid_pattern, state.get("raw_input_text") or "")
+    patient_id = found_ids[0] if found_ids else None
+
+    mcp_result = None
+    tool_used = None
+
+    # Intent matching — ordered by specificity
+    if patient_id and any(kw in raw_text for kw in ["prescription", "medicine", "medication", "rx"]):
+        mcp_result = call_mcp_tool("get_patient_prescriptions", {"patient_id": patient_id})
+        tool_used = "get_patient_prescriptions"
+    elif patient_id and any(kw in raw_text for kw in ["risk", "score", "danger", "severity"]):
+        mcp_result = call_mcp_tool("get_patient_risk", {"patient_id": patient_id})
+        tool_used = "get_patient_risk"
+    elif patient_id and any(kw in raw_text for kw in ["patient", "lookup", "search", "find", "details", "info", "show"]):
+        mcp_result = call_mcp_tool("search_patient", {"patient_id": patient_id})
+        tool_used = "search_patient"
+    elif any(kw in raw_text for kw in ["alert", "warning", "danger"]):
+        mcp_result = call_mcp_tool("get_recent_alerts")
+        tool_used = "get_recent_alerts"
+    elif any(kw in raw_text for kw in ["summary", "dashboard", "overview", "stats", "statistics"]):
+        mcp_result = call_mcp_tool("get_dashboard_summary")
+        tool_used = "get_dashboard_summary"
+
+    if mcp_result and "error" not in mcp_result:
+        logger.info(f"MCP Router: Tool '{tool_used}' matched, injecting context")
+        return {
+            "mcp_context": {
+                "tool": tool_used,
+                "result": mcp_result,
+            }
+        }
+
+    return {}
+
+
 def chat_flow_node(state: AgentState) -> Dict[str, Any]:
     """Normal clinical chat node reasoning about medical history."""
     logger.info("Chat Flow Node: Formulating conversational advice")
@@ -365,6 +435,18 @@ def chat_flow_node(state: AgentState) -> Dict[str, Any]:
     finally:
         db.close()
 
+    # Build MCP context section if available
+    mcp_section = ""
+    mcp_ctx = state.get("mcp_context")
+    if mcp_ctx and isinstance(mcp_ctx, dict):
+        import json
+        mcp_section = f"""
+    MCP Tool Data (from {mcp_ctx.get('tool', 'unknown tool')}):
+    {json.dumps(mcp_ctx.get('result', {}), indent=2, default=str)}
+
+    Use this data to provide a precise, data-driven answer.
+    """
+
     prompt = f"""
     You are AAROGYA, a knowledgeable, friendly rural doctor agent.
     Provide empathetic medical information based on this query: "{state['raw_input_text']}"
@@ -372,7 +454,7 @@ def chat_flow_node(state: AgentState) -> Dict[str, Any]:
     Context:
     Last messages:
     {history_context}
-    
+    {mcp_section}
     Guideline: Keep language extremely clear, free of complex jargon, and encouraging. Never perform definitive medical diagnoses. Suggest consulting their assigned doctor if needed.
     """
     response_msg = gemini_service.generate_content(prompt)
@@ -647,6 +729,7 @@ workflow = StateGraph(AgentState)
 
 # Add Nodes
 workflow.add_node("classifier", classifier_node)
+workflow.add_node("mcp_router", mcp_router_node)
 workflow.add_node("prescription_reader", prescription_reader_node)
 workflow.add_node("report_explainer", report_explainer_node)
 workflow.add_node("symptom_monitor", symptom_monitor_node)
@@ -657,9 +740,12 @@ workflow.add_node("responder", responder_node)
 # Set Entry Point
 workflow.set_entry_point("classifier")
 
-# Add Conditional Edges
+# Classifier → MCP Router (always runs first to check for MCP-eligible queries)
+workflow.add_edge("classifier", "mcp_router")
+
+# MCP Router → conditional routing based on original input type
 workflow.add_conditional_edges(
-    "classifier",
+    "mcp_router",
     route_input,
     {
         "prescription_reader": "prescription_reader",

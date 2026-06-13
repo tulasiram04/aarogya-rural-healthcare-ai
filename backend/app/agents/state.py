@@ -17,6 +17,9 @@ class AgentState(TypedDict):
     extracted_data: Dict[str, Any]  # Holds parsed medicines or lab metrics
     symptom_answers: Dict[str, Any] # Holds daily question checklist answers
     
+    # MCP Context (injected by mcp_router_node)
+    mcp_context: Optional[Dict[str, Any]]
+
     # Clinical Security & Escalation
     risk_level: str  # "low" | "medium" | "high" | "critical"
     risk_message: Optional[str]

@@ -10,6 +10,8 @@ class PatientBase(BaseModel):
     gender: str | None = None
     village: str | None = None
     sub_center: str | None = None
+    blood_group: str | None = None
+    profile_completion: int | None = 60
     assigned_hcw_id: uuid.UUID | None = None
     assigned_doctor_id: uuid.UUID | None = None
     preferred_language: str = "english"
@@ -28,6 +30,8 @@ class PatientUpdate(BaseModel):
     gender: str | None = None
     village: str | None = None
     sub_center: str | None = None
+    blood_group: str | None = None
+    profile_completion: int | None = None
     assigned_hcw_id: uuid.UUID | None = None
     assigned_doctor_id: uuid.UUID | None = None
     preferred_language: str | None = None
